@@ -1,0 +1,24 @@
+{
+  "name": "ts.validator",
+  "version": "1.0.0",
+  "description": "TypeScript based generic validation framework",
+  "main": "index.js",
+  "dependencies": {
+    "lodash": "^4.17.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VeritasSoftware/ts.validator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VeritasSoftware/ts.validator/issues"
+  },
+  "homepage": "https://github.com/VeritasSoftware/ts.validator#readme"
+}
