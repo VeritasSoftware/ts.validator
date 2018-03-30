@@ -39,3 +39,10 @@ Sample usage:
                                                                             .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
                                                                         .Exec())
                           .Exec();
+
+    //Check if the model is valid.
+    var isValid = validationResult.IsValid;
+
+    //Get all errors which start with some identifier string. 
+    //Below code will return Super.Code.Empty and Super.Code.Invalid errors
+    var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");                          

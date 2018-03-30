@@ -3,10 +3,12 @@ import * as cloneDeep from 'lodash/cloneDeep';
 import { IValidator, IValidationError, IValidationResult, Action, Func  } from './ivalidator';
 
 export class ValidationResult implements IValidationResult {
-    Errors: ValidationError[];
+    IsValid: boolean;
+    Errors: ValidationError[];    
 
     constructor(errors: ValidationError[]) {
         this.Errors = errors;
+        this.IsValid = !(this.Errors == null || this.Errors.length > 0);        
     }
 
     Identifier<TProperty>(identifier: string) : ValidationError {
@@ -87,14 +89,17 @@ export class Validator<T> implements IValidator<T> {
     Matches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.match(regex) == null) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+        if (val.match(/^\s*$/) != null)
+        {
+            if (val.match(regex) == null) {
+                if (errorIdentifier == null) {
+                    this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+                }
+                else {
+                    this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+                }                    
             }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }                    
-        }
+        }        
         return this;
     }
 

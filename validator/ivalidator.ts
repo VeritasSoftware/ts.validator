@@ -23,6 +23,7 @@ export interface IValidationError {
 
 export interface IValidationResult {
     Errors: IValidationError[];
+    IsValid: boolean;
 
     Identifier(identifier: string): IValidationError;
     IdentifierStartsWith<TProperty>(identifier: string) : IValidationError[];
