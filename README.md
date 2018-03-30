@@ -43,6 +43,12 @@ Sample usage:
     //Check if the model is valid.
     var isValid = validationResult.IsValid;
 
+    //Get all errors.
+    var allErrors = validationResult.Errors;
+
+    //Get error for a particular identifier
+    var employeeNameError = validationResult.Identifier("Employee.Name.Empty");
+
     //Get all errors which start with some identifier string. 
     //Below code will return Super.Code.Empty and Super.Code.Invalid errors
     var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");                          
