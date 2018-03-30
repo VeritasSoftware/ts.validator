@@ -1,7 +1,8 @@
 export interface IValidator<T> {
     If(predicate: Func<T, boolean>, then: Func<IValidator<T>, IValidationError[]>): IValidator<T>;
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string): IValidator<T>;
-    NotEmpty(predicate: Func<T, string>, message: string): IValidator<T>;    
+    NotEmpty(predicate: Func<T, string>, message: string): IValidator<T>; 
+    Matches(predicate: Func<T, string>, regex: string, message: string): IValidator<T>;   
     Exec(): IValidationError[];
 }
 

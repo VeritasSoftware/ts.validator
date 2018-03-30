@@ -17,14 +17,15 @@ export class ValidationError implements IValidationError {
 export class Validator<T> implements IValidator<T> {
     _model: T;
     _validationErrors: ValidationError[];   
-    _clonedModel: T; 
+    _clonedModel: T;
 
     constructor(model: T)
     {
         this._model = model;
         this._validationErrors = new Array<ValidationError>();
         this._clonedModel = cloneDeep(this._model);
-        Object.keys(this._clonedModel).map(k => { this._clonedModel[k] = () => k; });
+        //Object.keys(this._clonedModel).map(k => { this._clonedModel[k] = () => k; });         
+        findPropertyPath(this._clonedModel);           
     }
 
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string): IValidator<T> {
@@ -40,6 +41,15 @@ export class Validator<T> implements IValidator<T> {
         var val = predicate(this._model);
 
         if (val.match(/^\s*$/) != null) {
+            this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));
+        }
+        return this;
+    }
+
+    Matches(predicate: Func<T, string>, regex: string, message: string): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(regex) == null) {
             this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));
         }
         return this;
@@ -62,9 +72,21 @@ export class Validator<T> implements IValidator<T> {
     getPropertyName(expression: Function): string {        
         return expression(this._clonedModel)();
     }
-
+    
     Exec(): ValidationError[] {
         return this._validationErrors;
     }
 }
 
+function findPropertyPath(obj) {
+    Object.keys(obj).map(k => 
+        { 
+            var o = obj[k];                 
+
+            if (o && typeof o === "object" && ! Array.isArray(o)) {   // check for null then type object
+                findPropertyPath(o);
+            }
+            else
+                return obj[k] = () => k;
+        });
+}
