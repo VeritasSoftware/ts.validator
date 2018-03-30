@@ -1,11 +1,29 @@
 import * as cloneDeep from 'lodash/cloneDeep';
 
-import { IValidator, IValidationError, Action, Func  } from './ivalidator';
+import { IValidator, IValidationError, IValidationResult, Action, Func  } from './ivalidator';
+
+export class ValidationResult {
+    Errors: ValidationError[];
+
+    constructor(errors: ValidationError[]) {
+        this.Errors = errors;
+    }
+
+    Identifier<TProperty>(identifier: string) : ValidationError {
+        var results = this.Errors.filter(function(obj) { return obj.Identifier == identifier; });
+
+        if (results != null) {
+            return results[0];
+        }
+
+        return null;
+    }
+}
 
 export class ValidationError implements IValidationError {
     Message: string;
     Value: any;
-    Identifier: string;
+    Identifier: string;    
 
     constructor(identifier: string, value: any, message: string) {
         this.Message = message;
@@ -84,13 +102,13 @@ export class Validator<T> implements IValidator<T> {
         return this;
     }
 
-    If(predicate: Func<T, boolean>, then: Func<IValidator<T>, ValidationError[]>): IValidator<T> {
+    If(predicate: Func<T, boolean>, then: Func<IValidator<T>, IValidationResult>): IValidator<T> {
         if (predicate(this._model)) {
-            var errors = then(new Validator(this._model));
+            var errorResult = then(new Validator(this._model));
 
-            if (errors.length > 0) {
-                for (var i = 0; i < errors.length; i++) {
-                    this._validationErrors.push(errors[i]);
+            if (errorResult != null && errorResult.Errors != null && errorResult.Errors.length > 0) {
+                for (var i = 0; i < errorResult.Errors.length; i++) {
+                    this._validationErrors.push(errorResult.Errors[i]);
                 }
             }            
         }
@@ -107,8 +125,12 @@ export class Validator<T> implements IValidator<T> {
         }        
     }    
     
-    Exec(): ValidationError[] {
-        return this._validationErrors;
+    Exec(): ValidationResult {
+        return new ValidationResult(this._validationErrors);
+    }
+
+    GetError(identifier: string): ValidationError {
+        return this._validationErrors.filter(function(obj) { return obj.Identifier == "CreditCard.Number.Invalid"; })[0];
     }
 }
 
