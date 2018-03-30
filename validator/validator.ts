@@ -5,12 +5,12 @@ import { IValidator, IValidationError, Action, Func  } from './ivalidator';
 export class ValidationError implements IValidationError {
     Message: string;
     Value: any;
-    Property: string;
+    Identifier: string;
 
-    constructor(property: string, value: any, message: string) {
+    constructor(identifier: string, value: any, message: string) {
         this.Message = message;
         this.Value = value;
-        this.Property = property;
+        this.Identifier = identifier;
     }
 }
 
@@ -28,29 +28,44 @@ export class Validator<T> implements IValidator<T> {
         findPropertyPath(this._clonedModel);           
     }
 
-    NotNull<TProperty>(predicate: Func<T, TProperty>, message: string): IValidator<T> {
+    NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
         if (val == null) {
-            this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));
+            if (errorIdentifier == null) {
+                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+            }
+            else {
+                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+            }   
         }
         return this;
     }
 
-    NotEmpty(predicate: Func<T, string>, message: string): IValidator<T> {
+    NotEmpty(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
         if (val.match(/^\s*$/) != null) {
-            this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));
+            if (errorIdentifier == null) {
+                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+            }
+            else {
+                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+            }   
         }
         return this;
     }
 
-    Matches(predicate: Func<T, string>, regex: string, message: string): IValidator<T> {
+    Matches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
         if (val.match(regex) == null) {
-            this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));
+            if (errorIdentifier == null) {
+                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+            }
+            else {
+                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+            }                    
         }
         return this;
     }
@@ -67,26 +82,37 @@ export class Validator<T> implements IValidator<T> {
         }
 
         return this;
-    }
+    }    
 
-    getPropertyName(expression: Function): string {        
-        return expression(this._clonedModel)();
-    }
+    getPropertyName(expression: Function): string {
+        try{
+            return expression(this._clonedModel)();
+        }   
+        catch(ex) {
+            return "";
+        }        
+    }    
     
     Exec(): ValidationError[] {
         return this._validationErrors;
     }
 }
 
-function findPropertyPath(obj) {
+function findPropertyPath(obj, path:string = null) {    
     Object.keys(obj).map(k => 
         { 
             var o = obj[k];                 
 
             if (o && typeof o === "object" && ! Array.isArray(o)) {   // check for null then type object
-                findPropertyPath(o);
+                findPropertyPath(o, k);
             }
-            else
-                return obj[k] = () => k;
+            else {
+                var old = k;
+                if (path != null)                
+                    k = path + "." + k;
+
+                return obj[old] = () => k;               
+            }
+            //return obj[k] = () => k;                
         });
 }
