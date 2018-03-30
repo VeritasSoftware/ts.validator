@@ -25,4 +25,5 @@ export interface IValidationResult {
     Errors: IValidationError[];
 
     Identifier(identifier: string): IValidationError;
+    IdentifierStartsWith<TProperty>(identifier: string) : IValidationError[];
 }

@@ -2,7 +2,7 @@ import * as cloneDeep from 'lodash/cloneDeep';
 
 import { IValidator, IValidationError, IValidationResult, Action, Func  } from './ivalidator';
 
-export class ValidationResult {
+export class ValidationResult implements IValidationResult {
     Errors: ValidationError[];
 
     constructor(errors: ValidationError[]) {
@@ -14,6 +14,16 @@ export class ValidationResult {
 
         if (results != null) {
             return results[0];
+        }
+
+        return null;
+    }
+
+    IdentifierStartsWith<TProperty>(identifier: string) : ValidationError[] {
+        var results = this.Errors.filter(function(obj) { return obj.Identifier.startsWith(identifier); });
+
+        if (results != null) {
+            return results;
         }
 
         return null;
