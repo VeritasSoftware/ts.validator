@@ -37,6 +37,7 @@
     var validationResult = new Validator(model)                              
                               .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
                               .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
+                              .NotNull(m => m.Super, "Should not be null", "Super.Null")
                               .If(m => m.Super != null, validator => validator
                                   .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
                                   .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
@@ -46,9 +47,8 @@
                                                                 .ForEach(m => m.CreditCards, validator => 
                                                                                                   validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
                                                                                             .Exec())
-                                                        .Exec())
-                              .NotNull(m => m.Super, "Should not be null", "Super.Null")                              
-                          .Exec(); 
+                                                        .Exec())                                                            
+                          .Exec();
      
 
     //Check if the model is valid.
