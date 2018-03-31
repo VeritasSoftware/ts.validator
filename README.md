@@ -2,6 +2,8 @@
 
 **TypeScript based generic validation framework**
 
+[Demo Angular 5 CLI app using the framework](https://github.com/VeritasSoftware/ts.validator.app)
+
 **Sample usage:**
 
     class Employee {
