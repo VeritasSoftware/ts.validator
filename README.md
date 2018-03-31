@@ -5,18 +5,18 @@
 **Sample usage:**
 
     class Employee {
-    Name: string;
-    CreditCards: CreditCard[];
-    Super: Super;
+        Name: string;
+        CreditCards: CreditCard[];
+        Super: Super;
     }
 
     class CreditCard {
-    Number: number;
+        Number: number;
     }
 
     class Super {
-    Name: string;
-    Code: string;
+        Name: string;
+        Code: string;
     }
 
     var model = new Employee();
