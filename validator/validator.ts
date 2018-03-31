@@ -7,7 +7,13 @@ export class ValidationResult implements IValidationResult {
     Errors: ValidationError[];    
 
     constructor(errors: ValidationError[]) {
-        this.Errors = errors;
+        if (errors == null){
+            this.Errors = new Array<ValidationError>();
+        }
+        else {
+            this.Errors = errors;
+        }        
+
         this.IsValid = !(this.Errors == null || this.Errors.length > 0);        
     }
 
@@ -121,17 +127,24 @@ export class Validator<T> implements IValidator<T> {
         if (predicate(this._model)) {
             var errorResult = then(new Validator(this._model));
 
-            if (errorResult != null && errorResult.Errors != null && errorResult.Errors.length > 0) {
-                for (var i = 0; i < errorResult.Errors.length; i++) {
-                    this._validationErrors.push(errorResult.Errors[i]);
-                }
-            }            
+            this.addErrors(errorResult.Errors);                      
         }
 
         return this;
-    }    
+    }
+    
+    ForEach<TArray>(predicate: Func<T, Array<TArray>>, action: Func<IValidator<TArray>, IValidationResult>): IValidator<T>
+    {
+        var array = predicate(this._model);
 
-    getPropertyName(expression: Function): string {
+        if (array != null && array.length > 0) {
+            array.forEach(item => this.addErrors(action(new Validator(item)).Errors));
+        }        
+
+        return this;
+    }
+
+    private getPropertyName(expression: Function): string {
         try{
             return expression(this._clonedModel)();
         }   
@@ -140,6 +153,12 @@ export class Validator<T> implements IValidator<T> {
         }        
     }    
     
+    private addErrors(errors: ValidationError[]) {
+        if (errors != null &&  errors.length > 0) {
+            errors.forEach(e => this._validationErrors.push(e));
+        }        
+    }
+
     Exec(): ValidationResult {
         return new ValidationResult(this._validationErrors);
     }
