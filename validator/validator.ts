@@ -1,6 +1,6 @@
 import * as cloneDeep from 'lodash/cloneDeep';
 
-import { IValidator, IValidationError, IValidationResult, Action, Func  } from './ivalidator';
+import { IValidator, IValidationError, IValidationResult, Action, Func, Func2  } from './ivalidator';
 
 export class ValidationResult implements IValidationResult {
     IsValid: boolean;
@@ -187,12 +187,12 @@ export class Validator<T> implements IValidator<T> {
         }        
 
         return this;
-    }
+    }    
 
-    Required<TProperty>(predicate: Func<T, TProperty>, must: Func<TProperty, boolean>, message: string, errorIdentifier: string = null): IValidator<T>{
+    Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val == null || !must(val)) {
+        if (val == null || !must(this._model, val)) {
             if (errorIdentifier == null) {
                 this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
             }
