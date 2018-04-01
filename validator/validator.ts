@@ -144,6 +144,21 @@ export class Validator<T> implements IValidator<T> {
         return this;
     }
 
+    Required<TProperty>(predicate: Func<T, TProperty>, must: Func<TProperty, boolean>, message: string, errorIdentifier: string = null): IValidator<T>{
+        var val = predicate(this._model);
+
+        if (!must(val)) {
+            if (errorIdentifier == null) {
+                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+            }
+            else {
+                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+            }    
+        }
+
+        return this;
+    }
+
     private getPropertyName(expression: Function): string {
         try{
             return expression(this._clonedModel)();
