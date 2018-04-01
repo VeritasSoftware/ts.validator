@@ -67,8 +67,8 @@
     //Below code will return Super.Code.Empty and Super.Code.Invalid errors
     var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
 
-    API | Description
-    ----|------------
+    API  | Description
+    ---- | ------------
     If | Used for program flow. The then part is only evaluated if the if part is true.
     ForEach | Used to iterate and apply validations to an array.
     Required | Used to test if a property is true to a conditon.
