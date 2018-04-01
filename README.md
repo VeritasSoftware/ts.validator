@@ -65,4 +65,18 @@
 
     //Get all errors which start with some identifier string. 
     //Below code will return Super.Code.Empty and Super.Code.Invalid errors
-    var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");                          
+    var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
+
+    API | Description
+    ----|------------
+    If | Used for program flow. The then part is only evaluated if the if part is true.
+    ForEach | Used to iterate and apply validations to an array.
+    Required | Used to test if a property is true to a conditon.
+    NotNull | Used to test if a property is not null.
+    IsNull | Used to test if a property is null.
+    NotEmpty | Used to test if a string property is not empty.
+    IsEmpty | Used to test if a string property is empty.
+    Matches | Used to test if a string property matches a regular expression.
+    NotMatches | Used to test if a string property does not match a regular expression.
+    CreditCard | Used to test if a number property is a valid credit card number.
+    Exec | Returns the validation result.
