@@ -78,10 +78,38 @@ export class Validator<T> implements IValidator<T> {
         return this;
     }
 
+    IsNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val != null) {
+            if (errorIdentifier == null) {
+                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+            }
+            else {
+                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+            }   
+        }
+        return this;
+    }
+
     NotEmpty(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
         if (val.match(/^\s*$/) != null) {
+            if (errorIdentifier == null) {
+                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+            }
+            else {
+                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+            }   
+        }
+        return this;
+    }
+
+    IsEmpty(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null) {
             if (errorIdentifier == null) {
                 this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
             }
@@ -98,6 +126,23 @@ export class Validator<T> implements IValidator<T> {
         if (val.match(/^\s*$/) != null)
         {
             if (val.match(regex) == null) {
+                if (errorIdentifier == null) {
+                    this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+                }
+                else {
+                    this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+                }                    
+            }
+        }        
+        return this;
+    }
+
+    NotMatches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) != null)
+        {
+            if (val.match(regex) != null) {
                 if (errorIdentifier == null) {
                     this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
                 }
