@@ -1,70 +1,6 @@
-import * as cloneDeep from 'lodash/cloneDeep';
-
 import { IValidator, IValidationError, IValidationResult, Action, Func, Func2  } from './ivalidator';
-
-export class ValidationResult implements IValidationResult {
-    IsValid: boolean;
-    Errors: ValidationError[];    
-
-    constructor(errors: ValidationError[]) {
-        if (errors == null){
-            this.Errors = new Array<ValidationError>();
-        }
-        else {
-            this.Errors = errors;
-        }        
-
-        this.IsValid = !(this.Errors == null || this.Errors.length > 0);        
-    }
-
-    Identifier<TProperty>(identifier: string) : ValidationError {
-        var results = this.Errors.filter(function(obj) { return obj.Identifier == identifier; });
-
-        if (results != null) {
-            return results[0];
-        }
-
-        return null;
-    }
-
-    IdentifierStartsWith<TProperty>(identifier: string) : ValidationError[] {
-        var results = this.Errors.filter(function(obj) { return obj.Identifier.startsWith(identifier); });
-
-        if (results != null) {
-            return results;
-        }
-
-        return null;
-    }
-}
-
-export class ValidationError implements IValidationError {
-    Message: string;
-    Value: any;
-    Identifier: string;    
-
-    constructor(identifier: string, value: any, message: string) {
-        this.Message = message;
-        this.Value = value;
-        this.Identifier = identifier;
-    }
-}
-
-class TypeFactory {
-    static dictionary: Array<[string, any]> = new Array<[string, any]>();
-
-    static getTypeClone<T>(model: T): any {
-        var typeOf = model.constructor.name;
-        var clonedModel = this.dictionary.filter(function(obj) { return obj[0] ==  typeOf});
-        if (clonedModel != null && clonedModel.length > 0) {
-            return clonedModel[0][1];
-        }
-        var clone = cloneDeep(model);                        
-        this.dictionary.push([typeOf.toString(), clone]);
-        findPropertyPath(clone);
-        return clone;
-    }    
-}
+import { TypeFactory } from './type-factory';
+import { ValidationResult, ValidationError } from './validation-result';
 
 export class Validator<T> implements IValidator<T> {
     _model: T;
@@ -241,23 +177,4 @@ export class Validator<T> implements IValidator<T> {
     GetError(identifier: string): ValidationError {
         return this._validationErrors.filter(function(obj) { return obj.Identifier == "CreditCard.Number.Invalid"; })[0];
     }
-}
-
-function findPropertyPath(obj, path:string = null) {    
-    Object.keys(obj).map(k => 
-        { 
-            var o = obj[k];                 
-
-            if (o && typeof o === "object" && ! Array.isArray(o)) {   // check for null then type object
-                findPropertyPath(o, k);
-            }
-            else {
-                var old = k;
-                if (path != null)                
-                    k = path + "." + k;
-
-                return obj[old] = () => k;               
-            }
-            //return obj[k] = () => k;                
-        });
 }
