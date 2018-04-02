@@ -20,6 +20,7 @@
 
 **Sample usage:**
 
+```typescript
     class Employee {
         Name: string;
         CreditCards: CreditCard[];
@@ -80,3 +81,4 @@
     //Get all errors which start with some identifier string. 
     //Below code will return Super.Code.Empty and Super.Code.Invalid errors
     var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
+```
