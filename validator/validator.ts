@@ -50,6 +50,22 @@ export class ValidationError implements IValidationError {
     }
 }
 
+class TypeFactory {
+    static dictionary: Array<[string, any]> = new Array<[string, any]>();
+
+    static getTypeClone<T>(model: T): any {
+        var typeOf = model.constructor.name;
+        var clonedModel = this.dictionary.filter(function(obj) { return obj[0] ==  typeOf});
+        if (clonedModel != null && clonedModel.length > 0) {
+            return clonedModel[0][1];
+        }
+        var clone = cloneDeep(model);                        
+        this.dictionary.push([typeOf.toString(), clone]);
+        findPropertyPath(clone);
+        return clone;
+    }    
+}
+
 export class Validator<T> implements IValidator<T> {
     _model: T;
     _validationErrors: ValidationError[];   
@@ -59,9 +75,8 @@ export class Validator<T> implements IValidator<T> {
     {
         this._model = model;
         this._validationErrors = new Array<ValidationError>();
-        this._clonedModel = cloneDeep(this._model);
-        //Object.keys(this._clonedModel).map(k => { this._clonedModel[k] = () => k; });         
-        findPropertyPath(this._clonedModel);           
+
+        this._clonedModel = TypeFactory.getTypeClone(model);  
     }
 
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier: string = null): IValidator<T> {
