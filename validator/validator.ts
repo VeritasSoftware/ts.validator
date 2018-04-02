@@ -173,8 +173,4 @@ export class Validator<T> implements IValidator<T> {
     Exec(): ValidationResult {
         return new ValidationResult(this._validationErrors);
     }
-
-    GetError(identifier: string): ValidationError {
-        return this._validationErrors.filter(function(obj) { return obj.Identifier == "CreditCard.Number.Invalid"; })[0];
-    }
 }
