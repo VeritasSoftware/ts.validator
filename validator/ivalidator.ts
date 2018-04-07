@@ -35,5 +35,5 @@ export interface IValidationResult {
     IsValid: boolean;
 
     Identifier(identifier: string): IValidationError;
-    IdentifierStartsWith<TProperty>(identifier: string) : IValidationError[];
+    IdentifierStartsWith(identifier: string) : IValidationError[];
 }

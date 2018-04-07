@@ -15,7 +15,7 @@ export class ValidationResult implements IValidationResult {
         this.IsValid = !(this.Errors == null || this.Errors.length > 0);        
     }
 
-    Identifier<TProperty>(identifier: string) : ValidationError {
+    Identifier(identifier: string) : ValidationError {
         var results = this.Errors.filter(function(obj) { return obj.Identifier == identifier; });
 
         if (results != null) {
@@ -25,7 +25,7 @@ export class ValidationResult implements IValidationResult {
         return null;
     }
 
-    IdentifierStartsWith<TProperty>(identifier: string) : ValidationError[] {
+    IdentifierStartsWith(identifier: string) : ValidationError[] {
         var results = this.Errors.filter(function(obj) { return obj.Identifier.startsWith(identifier); });
 
         if (results != null) {
