@@ -16,6 +16,7 @@
 | Matches      | Used to test if a string property matches a regular expression.                |
 | NotMatches   | Used to test if a string property does not match a regular expression.         |
 | CreditCard   | Used to test if a number property is a valid credit card number.               |
+| Email        | Used to test if a string property is a valid email address.                    |
 | Exec         | Returns the validation result.                                                 |
 
 **Sample usage:**
