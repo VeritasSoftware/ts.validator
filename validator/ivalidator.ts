@@ -8,7 +8,8 @@ export interface IValidator<T> {
     IsEmpty(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T> 
     Matches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier?: string): IValidator<T>;
     NotMatches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier?: string): IValidator<T>;
-    CreditCard(predicate: Func<T, number>, message: string, errorIdentifier?: string): IValidator<T>;   
+    CreditCard(predicate: Func<T, number>, message: string, errorIdentifier?: string): IValidator<T>;
+    Email(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;   
     Exec(): IValidationResult;
 }
 
