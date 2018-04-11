@@ -4,6 +4,8 @@
 
 [Demo Angular 5 CLI app using the framework](https://github.com/VeritasSoftware/ts.validator.app)
 
+[**Article on framework**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
+
 | API          | Description                                                                    |
 | ------------ | ------------------------------------------------------------------------------ |
 | If           | Used for program flow. The then part is only evaluated if the if part is true. |
