@@ -12,7 +12,7 @@ export class ValidationResult implements IValidationResult {
             this.Errors = errors;
         }        
 
-        this.IsValid = !(this.Errors == null || this.Errors.length > 0);        
+        this.IsValid = this.Errors.length <= 0;
     }
 
     Identifier(identifier: string) : ValidationError {
