@@ -18,13 +18,8 @@ export class Validator<T> implements IValidator<T> {
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val == null) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-            }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }   
+        if (val == null) {                       
+            this.processErrors(predicate, val, message, errorIdentifier);
         }
         return this;
     }
@@ -32,13 +27,8 @@ export class Validator<T> implements IValidator<T> {
     IsNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val != null) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-            }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }   
+        if (val != null) {             
+            this.processErrors(predicate, val, message, errorIdentifier); 
         }
         return this;
     }
@@ -46,13 +36,8 @@ export class Validator<T> implements IValidator<T> {
     NotEmpty(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.match(/^\s*$/) != null) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-            }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }   
+        if (val.match(/^\s*$/) != null) {            
+            this.processErrors(predicate, val, message, errorIdentifier);  
         }
         return this;
     }
@@ -60,13 +45,8 @@ export class Validator<T> implements IValidator<T> {
     IsEmpty(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.match(/^\s*$/) == null) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-            }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }   
+        if (val.match(/^\s*$/) == null) {                        
+            this.processErrors(predicate, val, message, errorIdentifier);
         }
         return this;
     }
@@ -76,13 +56,8 @@ export class Validator<T> implements IValidator<T> {
 
         if (val.match(/^\s*$/) != null)
         {
-            if (val.match(regex) == null) {
-                if (errorIdentifier == null) {
-                    this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-                }
-                else {
-                    this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-                }                    
+            if (val.match(regex) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
             }
         }        
         return this;
@@ -94,13 +69,8 @@ export class Validator<T> implements IValidator<T> {
         if (val.match(/^\s*$/) != null)
         {
             if (val.match(regex) != null) {
-                if (errorIdentifier == null) {
-                    this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-                }
-                else {
-                    this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-                }                    
-            }
+                this.processErrors(predicate, val, message, errorIdentifier);                
+            }            
         }        
         return this;
     }
@@ -108,13 +78,8 @@ export class Validator<T> implements IValidator<T> {
     CreditCard(predicate: Func<T, number>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-            }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }                    
+        if (val.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {            
+            this.processErrors(predicate, val, message, errorIdentifier);                    
         }
         return this;
     }
@@ -122,13 +87,8 @@ export class Validator<T> implements IValidator<T> {
     Email(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.toString().match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/) == null) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-            }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }                    
+        if (val.toString().match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/) == null) {              
+            this.processErrors(predicate, val, message, errorIdentifier);                
         }
         return this;
     }
@@ -157,13 +117,8 @@ export class Validator<T> implements IValidator<T> {
     Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val == null || !must(this._model, val)) {
-            if (errorIdentifier == null) {
-                this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
-            }
-            else {
-                this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
-            }    
+        if (val == null || !must(this._model, val)) {            
+            this.processErrors(predicate, val, message, errorIdentifier);   
         }
 
         return this;
@@ -183,6 +138,15 @@ export class Validator<T> implements IValidator<T> {
             errors.forEach(e => this._validationErrors.push(e));
         }        
     }
+
+    private processErrors(predicate: Function, val: any, message: string, errorIdentifier: string = null) {
+        if (errorIdentifier == null) {
+            this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+        }
+        else {
+            this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+        }   
+    }    
 
     Exec(): ValidationResult {
         return new ValidationResult(this._validationErrors);
