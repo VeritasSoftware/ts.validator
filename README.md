@@ -73,12 +73,23 @@
                                 .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
                                             validator => validator
                                                                 .ForEach(m => m.CreditCards, validator => 
-                                                                                                        validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                                                                    validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                                                                             .RequiredAsync([
+                                                                                                               {
+                                                                                                                 predicate: m => m.Number,
+                                                                                                                 required: (m, ccNo) => {
+                                                                                                                   //Some long running task to validate that the credit card no exists.
+                                                                                                                   //return true or false.
+                                                                                                                   return true;
+                                                                                                                 },
+                                                                                                                 message: "The credit card number does not exist",
+                                                                                                                 errorIdentifier: "CreditCard.Number.DoesNotExist"
+                                                                                                               }
+                                                                                                             ])
                                                                                             .Exec())
                                                         .Exec())                                                            
-                            .Exec();  
+                            .Exec();
      
-
     //Check if the model is valid.
     var isValid = validationResult.IsValid;
 
@@ -100,6 +111,7 @@
 *   First, an object of Employee model is created and the data for the properties populated.
 *   The **rules** for Employee validation are laid using the **Validator** class the framework provides.
 *   The Employee object is passed to this class and goes through the validation rules laid.
+*   The **RequiredAsync** rule allows for an array of **long running validation tasks** to be processed in parallel.
 *   Each validation rule comprises of a property on which the validation will apply, a message for any error and an identifier string for the error.
 *   The **identifier string** is used to **group messages** together for a field.
 *   The framework provides an API called **IdentifierStartsWith** which fetches all the validation errors for a particular identifier starts with the text.
