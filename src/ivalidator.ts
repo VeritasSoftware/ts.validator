@@ -2,7 +2,6 @@ export interface IValidator<T> {
     If(predicate: Func<T, boolean>, then: Func<IValidator<T>, IValidationResult>): IValidator<T>;
     ForEach<TArray>(predicate: Func<T, Array<TArray>>, action: Func<IValidator<TArray>, IValidationResult>): IValidator<T>;
     Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier?: string): IValidator<T>;
-    RequiredAsync<TProperty>(musts: IRequiredAsync<TProperty, T, boolean>[]): IValidator<T>;    
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
     IsNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
     NotEmpty(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
@@ -24,13 +23,6 @@ export interface Func<T, TResult> {
 
 export interface Func2<T, TProperty, TResult> {
     (property: TProperty, item: T): TResult;
-}
-
-export interface IRequiredAsync<T, TProperty, TResult> {
-    predicate: Func<TProperty, T>,
-    required: Func2<T, TProperty, TResult>,
-    message: string,
-    errorIdentifier?: string
 }
 
 export interface IValidationError {

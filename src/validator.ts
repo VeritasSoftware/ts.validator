@@ -1,4 +1,4 @@
-import { IValidator, IValidationError, IValidationResult, Action, Func, Func2, IRequiredAsync  } from './ivalidator';
+import { IValidator, IValidationError, IValidationResult, Action, Func, Func2 } from './ivalidator';
 import { TypeFactory } from './type-factory';
 import { ValidationResult, ValidationError } from './validation-result';
 
@@ -120,28 +120,6 @@ export class Validator<T> implements IValidator<T> {
         if (val == null || !must(this._model, val)) {            
             this.processErrors(predicate, val, message, errorIdentifier);   
         }
-
-        return this;
-    }
-
-    RequiredAsync<TProperty>(musts: IRequiredAsync<TProperty, T, boolean>[]): IValidator<T> {      
-        var i = 0;
-        var promises = new Array<Promise<any>>();
-        musts.forEach(m => {
-            var promise = new Promise((resolve, reject) => {
-                var val = musts[i].predicate(this._model);
-
-                if (val == null || !musts[i].required(this._model, val))
-                {
-                    this.processErrors(musts[i].predicate, val, musts[i].message, musts[i].errorIdentifier);                 
-                }            
-                resolve();
-            });
-            promises.push(promise);
-            i++;
-        });            
-
-        Promise.all([promises]);        
 
         return this;
     }
