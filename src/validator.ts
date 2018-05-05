@@ -174,11 +174,11 @@ export class Validator<T> implements IValidator<T> {
     }
 }
 
-class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> {
-    _property: TProperty;
-    _validationErrors: ValidationError[];   
-    _clonedProperty: TProperty;
+class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> {           
     _model: T;
+    _clonedModel: T;    
+    _validationErrors: ValidationError[];
+    _property: TProperty;
     _predicate: Func<T, TProperty>;
 
     constructor(property: TProperty, model: T, predicate: Func<T, TProperty>)
@@ -187,9 +187,8 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
         this._predicate = predicate;
         this._property = property;
         this._validationErrors = new Array<ValidationError>();
-        debugger;
 
-        this._clonedProperty = TypeFactory.getTypeClone(property);  
+        this._clonedModel = TypeFactory.getTypeClone(this._model);  
     }
 
     NotNull(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
@@ -274,7 +273,6 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
     }
 
     private processErrors(val: any, message: string, errorIdentifier: string = null) {
-        debugger;
         if (errorIdentifier == null) {
             this._validationErrors.push(new ValidationError(this.getPropertyName(this._predicate), val, message));  
         }
@@ -285,7 +283,7 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
     
     private getPropertyName(expression: Function): string {
         try{
-            return expression(this._clonedProperty)();
+            return expression(this._clonedModel)();
         }   
         catch(ex) {
             return "";
