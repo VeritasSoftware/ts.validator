@@ -1,4 +1,4 @@
-import { IValidator, IValidationError, IValidationResult, Action, Func, Func2 } from './ivalidator';
+import { IValidator, IValidationError, IValidationResult, Action, Func, Func2, IRuleSet } from './ivalidator';
 import { TypeFactory } from './type-factory';
 import { ValidationResult, ValidationError } from './validation-result';
 
@@ -13,6 +13,18 @@ export class Validator<T> implements IValidator<T> {
         this._validationErrors = new Array<ValidationError>();
 
         this._clonedModel = TypeFactory.getTypeClone(model);  
+    }
+
+    For<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSet<T, TProperty>, IValidationResult>): IValidator<T> {
+        var val = predicate(this._model);
+
+        var validator = new RuleSetValidator<T, TProperty>(val, this._model, predicate);
+
+        var errorResult = ruleSet(validator);
+
+        this.addErrors(errorResult.Errors);
+
+        return this;
     }
 
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier: string = null): IValidator<T> {
@@ -46,6 +58,15 @@ export class Validator<T> implements IValidator<T> {
         var val = predicate(this._model);
 
         if (val.match(/^\s*$/) == null) {                        
+            this.processErrors(predicate, val, message, errorIdentifier);
+        }
+        return this;
+    }
+
+    Length(predicate: Func<T, string>, lowerBound: number, upperBound: number, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (!(val.length >= lowerBound && val.length <= upperBound)) {                        
             this.processErrors(predicate, val, message, errorIdentifier);
         }
         return this;
@@ -151,4 +172,123 @@ export class Validator<T> implements IValidator<T> {
     Exec(): ValidationResult {
         return new ValidationResult(this._validationErrors);
     }
+}
+
+class RuleSetValidator<T, TProperty> implements IRuleSet<T, TProperty> {
+    _property: TProperty;
+    _validationErrors: ValidationError[];   
+    _clonedProperty: TProperty;
+    _model: T;
+    _predicate: Func<T, TProperty>;
+
+    constructor(property: TProperty, model: T, predicate: Func<T, TProperty>)
+    {
+        this._model = model;
+        this._predicate = predicate;
+        this._property = property;
+        this._validationErrors = new Array<ValidationError>();
+        debugger;
+
+        this._clonedProperty = TypeFactory.getTypeClone(property);  
+    }
+
+    NotNull(message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property == null) {                       
+            this.processErrors(this._predicate, this._property, message, errorIdentifier);
+        }
+        return this;
+    }
+
+    IsNull(message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property != null) {             
+            this.processErrors(this._predicate, this._property, message, errorIdentifier); 
+        }
+        return this;
+    }
+
+    NotEmpty(message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) != null) {            
+            this.processErrors(this._predicate, this._property.toString(), message, errorIdentifier);  
+        }
+        return this;
+    }
+
+    IsEmpty(message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null) {                        
+            this.processErrors(this._predicate, this._property.toString(), message, errorIdentifier);
+        }
+        return this;
+    }
+
+    Length(lowerBound: number, upperBound: number, message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (!(this._property.toString().length >= lowerBound && this._property.toString().length <= upperBound)) {                        
+            this.processErrors(this._predicate, this._property.toString(), message, errorIdentifier);
+        }
+        return this;
+    }
+
+    Matches(regex: string, message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) != null)
+        {
+            if (this._property.toString().match(regex) == null) {                                
+                this.processErrors(this._predicate, this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    NotMatches(regex: string, message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) != null)
+        {
+            if (this._property.toString().match(regex) != null) {
+                this.processErrors(this._predicate, this._property.toString(), message, errorIdentifier);                
+            }            
+        }        
+        return this;
+    }
+
+    CreditCard(message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {            
+            this.processErrors(this._predicate, this._property, message, errorIdentifier);                    
+        }
+        return this;
+    }
+
+    Email(message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property.toString().match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/) == null) {              
+            this.processErrors(this._predicate, this._property, message, errorIdentifier);                
+        }
+        return this;
+    }
+
+    Required(must: Func2<TProperty, T, boolean>, message: string, errorIdentifier: string = null): IRuleSet<T, TProperty> {
+        if (this._property == null || !must(this._model, this._property)) {            
+            this.processErrors(this._predicate, this._property, message, errorIdentifier);   
+        }
+
+        return this;
+    }
+
+    Exec(): ValidationResult {
+        return new ValidationResult(this._validationErrors);
+    }
+
+    private processErrors(predicate: Function, val: any, message: string, errorIdentifier: string = null) {
+        debugger;
+        if (errorIdentifier == null) {
+            this._validationErrors.push(new ValidationError(this.getPropertyName(predicate), val, message));  
+        }
+        else {
+            this._validationErrors.push(new ValidationError(errorIdentifier, val, message));
+        }   
+    }  
+    
+    private getPropertyName(expression: Function): string {
+        try{
+            return expression(this._clonedProperty)();
+        }   
+        catch(ex) {
+            return "";
+        }        
+    }  
 }
