@@ -45,6 +45,7 @@
 
     var model = new Employee();
     model.Name = "John Doe";
+    model.Password = "sD4A";
 
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
