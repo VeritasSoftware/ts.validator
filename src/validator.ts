@@ -75,7 +75,7 @@ export class Validator<T> implements IValidator<T> {
     Matches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.match(/^\s*$/) != null)
+        if (val.match(/^\s*$/) == null)
         {
             if (val.match(regex) == null) {                                
                 this.processErrors(predicate, val, message, errorIdentifier);
@@ -87,7 +87,7 @@ export class Validator<T> implements IValidator<T> {
     NotMatches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.match(/^\s*$/) != null)
+        if (val.match(/^\s*$/) == null)
         {
             if (val.match(regex) != null) {
                 this.processErrors(predicate, val, message, errorIdentifier);                
@@ -227,7 +227,7 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
     }
 
     Matches(regex: string, message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
-        if (this._property.toString().match(/^\s*$/) != null)
+        if (this._property.toString().match(/^\s*$/) == null)
         {
             if (this._property.toString().match(regex) == null) {                                
                 this.processErrors(this._property.toString(), message, errorIdentifier);
@@ -237,7 +237,7 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
     }
 
     NotMatches(regex: string, message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
-        if (this._property.toString().match(/^\s*$/) != null)
+        if (this._property.toString().match(/^\s*$/) == null)
         {
             if (this._property.toString().match(regex) != null) {
                 this.processErrors(this._property.toString(), message, errorIdentifier);                
