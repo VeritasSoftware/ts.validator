@@ -110,16 +110,16 @@
     //Get all errors which start with some identifier string. 
     //Below code will return Super.Code.Empty and Super.Code.Invalid errors
     var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
-    ```
+```
 
-    **In the above code snippet:**
+**In the above code snippet:**
 
-    *   The models are **Employee**, **Credit Card**, **Super**.
-    *   The Employee model has CreditCard and Super as the child models.
-    *   First, an object of Employee model is created and the data for the properties populated.
-    *   The **rules** for Employee validation are laid using the **Validator** class the framework provides.
-    *   The Employee object is passed to this class and goes through the validation rules laid.
-    *   Each validation rule comprises of a property on which the validation will apply, a message for any error and an identifier string for the error.
-    *   The **identifier string** is used to **group messages** together for a field.
-    *   The framework provides an API called **IdentifierStartsWith** which fetches all the validation errors for a particular identifier starts with the text.
-    *   Eg. “Super.Code” will fetch all errors whose identifier starts with Super.Code.
+*   The models are **Employee**, **Credit Card**, **Super**.
+*   The Employee model has CreditCard and Super as the child models.
+*   First, an object of Employee model is created and the data for the properties populated.
+*   The **rules** for Employee validation are laid using the **Validator** class the framework provides.
+*   The Employee object is passed to this class and goes through the validation rules laid.
+*   Each validation rule comprises of a property on which the validation will apply, a message for any error and an identifier string for the error.
+*   The **identifier string** is used to **group messages** together for a field.
+*   The framework provides an API called **IdentifierStartsWith** which fetches all the validation errors for a particular identifier starts with the text.
+*   Eg. “Super.Code” will fetch all errors whose identifier starts with Super.Code.
