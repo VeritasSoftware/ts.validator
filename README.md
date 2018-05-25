@@ -1,8 +1,8 @@
 # ts.validator
 
-**TypeScript based generic validation framework**
+## TypeScript based generic validation framework
 
-[Demo Angular 5 CLI app using the framework](https://github.com/VeritasSoftware/ts.validator.app)
+[**Demo Angular 6 CLI app using the framework**](https://github.com/VeritasSoftware/ts-validator-app-angular6)
 
 [**Article on framework**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
 
