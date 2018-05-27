@@ -211,14 +211,14 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
 **Synchronous validation**
 
 ```typescript
-    var validationResult = new Validator(accountant).Base(validateEmployeeRules)
+    var validationResult = new Validator(accountant).ValidateBase(validateEmployeeRules)
                                                     .Validate(validateAccountantRules); 
 ```
 
 **Asynchronous validation**
 
 ```typescript
-    var validationResult = await new Validator(accountant).BaseAsync(validateEmployeeRules)
+    var validationResult = await new Validator(accountant).ValidateBaseAsync(validateEmployeeRules)
                                                           .ValidateAsync(validateAccountantRules); 
 ```
 
@@ -226,4 +226,4 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
 
 *   The **Accountant** model inherits from **Employee**.
 *   The validation rules for Accountant model (**validateAccountantRules**) only validate the properties of the Accountant class.
-*   The base class Employee is validated using **Base** and **BaseAsync** methods and the Employee validation rules.
+*   The base class Employee is validated using **ValidateBase** and **ValidateBaseAsync** methods and the Employee validation rules.

@@ -313,7 +313,7 @@ export class Validator<T> implements IValidatorSync<T>, IValidatorAsync<T> {
         this._basesAsync = new Array<BaseRule<any>>();             
     }
 
-    Base<TBase extends T>(rules: Func<IValidator<TBase>, ValidationResult>): IValidatorSync<T> {
+    ValidateBase<TBase extends T>(rules: Func<IValidator<TBase>, ValidationResult>): IValidatorSync<T> {
         var base = <TBase>this._model; 
 
         if (base != null) {
@@ -326,7 +326,7 @@ export class Validator<T> implements IValidatorSync<T>, IValidatorAsync<T> {
         return this;        
     }
 
-    BaseAsync<TBase extends T>(rules: Func<IValidator<TBase>, ValidationResult>): IValidatorAsync<T> {
+    ValidateBaseAsync<TBase extends T>(rules: Func<IValidator<TBase>, ValidationResult>): IValidatorAsync<T> {
         var base = <TBase>this._model;
         this._basesAsync.push(new BaseRule<TBase>(base, rules));        
 

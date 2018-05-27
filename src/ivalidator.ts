@@ -30,12 +30,12 @@ export interface IRuleSetValidator<T, TProperty>{
 }
 
 export interface IValidatorSync<T> {
-    Base<TBase extends T>(rules: Func<IValidator<TBase>, IValidationResult>): IValidatorSync<T>;
+    ValidateBase<TBase extends T>(rules: Func<IValidator<TBase>, IValidationResult>): IValidatorSync<T>;
     Validate(action: Func<IValidator<T>, IValidationResult>): IValidationResult;
 }
 
 export interface IValidatorAsync<T> {
-    BaseAsync<TBase extends T>(rules: Func<IValidator<TBase>, IValidationResult>): IValidatorAsync<T>;
+    ValidateBaseAsync<TBase extends T>(rules: Func<IValidator<TBase>, IValidationResult>): IValidatorAsync<T>;
     ValidateAsync(action: Func<IValidator<T>, IValidationResult>): Promise<IValidationResult>;
 }
 
