@@ -1,8 +1,8 @@
-import { IValidator, IValidatorAsync, IValidationError, IValidationResult, Action, Func, Func2, IRuleSetValidator } from './ivalidator';
+import { IValidator, IValidatorSync, IValidatorAsync, IValidationError, IValidationResult, Action, Func, Func2, IRuleSetValidator } from './ivalidator';
 import { TypeFactory } from './type-factory';
 import { ValidationResult, ValidationError } from './validation-result';
 
-export class Validator<T> implements IValidator<T> {
+export class ObjectValidator<T> implements IValidator<T> {
     _model: T;
     _validationErrors: ValidationError[];   
     _clonedModel: T;
@@ -116,7 +116,7 @@ export class Validator<T> implements IValidator<T> {
 
     If(predicate: Func<T, boolean>, then: Func<IValidator<T>, IValidationResult>): IValidator<T> {
         if (predicate(this._model)) {
-            var errorResult = then(new Validator(this._model));
+            var errorResult = then(new ObjectValidator(this._model));
 
             this.addErrors(errorResult.Errors);                      
         }
@@ -129,7 +129,7 @@ export class Validator<T> implements IValidator<T> {
         var array = predicate(this._model);
 
         if (array != null && array.length > 0) {
-            array.forEach(item => this.addErrors(action(new Validator(item)).Errors));
+            array.forEach(item => this.addErrors(action(new ObjectValidator(item)).Errors));
         }        
 
         return this;
@@ -299,11 +299,24 @@ export class ValidatorAsync<T> implements IValidatorAsync<T> {
         this._model = model;        
     }
 
-    async Validate(action: Func<IValidator<T>, ValidationResult>): Promise<ValidationResult> {
+    async Validate(rules: Func<IValidator<T>, ValidationResult>): Promise<ValidationResult> {
         var promise = new Promise<ValidationResult>((resolve, reject) => {
-            resolve(action(new Validator<T>(this._model)));
+            resolve(rules(new ObjectValidator<T>(this._model)));
         });
         
         return promise;
+    }
+}
+
+export class Validator<T> implements IValidatorSync<T> {
+    _model: T;    
+
+    constructor(model: T)
+    {
+        this._model = model;        
+    }
+
+    Validate(rules: Func<IValidator<T>, ValidationResult>): ValidationResult {
+        return rules(new ObjectValidator<T>(this._model));
     }
 }
