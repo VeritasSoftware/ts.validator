@@ -29,6 +29,10 @@ export interface IRuleSetValidator<T, TProperty>{
     Exec(): IValidationResult; 
 }
 
+export interface IValidatorAsync<T> {
+    Validate(action: Func<IValidator<T>, IValidationResult>): Promise<IValidationResult>;
+}
+
 export interface Action<T> {
     (item: T): void;
 }

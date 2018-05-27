@@ -1,4 +1,4 @@
-import { IValidator, IValidationError, IValidationResult, Action, Func, Func2, IRuleSetValidator } from './ivalidator';
+import { IValidator, IValidatorAsync, IValidationError, IValidationResult, Action, Func, Func2, IRuleSetValidator } from './ivalidator';
 import { TypeFactory } from './type-factory';
 import { ValidationResult, ValidationError } from './validation-result';
 
@@ -289,4 +289,21 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
             return "";
         }        
     }  
+}
+
+export class ValidatorAsync<T> implements IValidatorAsync<T> {
+    _model: T;    
+
+    constructor(model: T)
+    {
+        this._model = model;        
+    }
+
+    async Validate(action: Func<IValidator<T>, ValidationResult>): Promise<ValidationResult> {
+        var promise = new Promise<ValidationResult>((resolve, reject) => {
+            resolve(action(new Validator<T>(this._model)));
+        });
+        
+        return promise;
+    }
 }
