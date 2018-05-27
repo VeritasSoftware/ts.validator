@@ -153,3 +153,76 @@
 *   The **identifier string** is used to **group messages** together for a field.
 *   The framework provides an API called **IdentifierStartsWith** which fetches all the validation errors for a particular identifier starts with the text.
 *   Eg. “Super.Code” will fetch all errors whose identifier starts with Super.Code.
+
+## Inheritance support
+
+Let us say there is a class Accountant that inherits from Employee.
+
+**Models**
+
+```typescript
+ class Accountant extends Employee {
+   Code: string;
+ }
+```
+
+**Validation rules**
+
+```typescript
+var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
+        return validator
+                    .NotEmpty(m => m.Code, "Should not be empty")
+                .Exec();
+};
+```
+**Populate models**
+
+```typescript
+    var accountant = new Accountant();
+    accountant.Code = "ACC001";
+
+    //Employee data
+    accountant.Name = "John Doe";
+
+    accountant.Password = "sD4A3";
+    accountant.PreviousPasswords = new Array<string>()     
+    accountant.PreviousPasswords.push("sD4A");
+    accountant.PreviousPasswords.push("sD4A1");
+    accountant.PreviousPasswords.push("sD4A2");
+
+    accountant.CreditCards = new Array<CreditCard>();
+    var masterCard = new CreditCard();
+    masterCard.Number = 5105105105105100;
+    masterCard.Name = "John Doe"
+    var amexCard = new CreditCard();
+    amexCard.Number = 371449635398431;
+    amexCard.Name = "John Doe"
+    accountant.CreditCards.push(masterCard);
+    accountant.CreditCards.push(amexCard);
+
+    accountant.Super = new Super();
+    accountant.Super.Name = "XYZ Super Fund";
+    accountant.Super.Code = "XY1234";
+
+    accountant.Email = "john.doe@xyx.com";
+```
+
+**Synchronous validation**
+
+```typescript
+    var validationResult = new Validator(accountant).Base(validateEmployeeRules)
+                                                    .Validate(validateAccountantRules); 
+```
+
+**Asynchronous validation**
+
+```typescript
+    var validationResult = await new Validator(accountant).BaseAsync(validateEmployeeRules)
+                                                          .ValidateAsync(validateAccountantRules); 
+```
+
+### Summary of above code snippets
+
+*   The **Accountant** model inherits from **Employee**.
+*   The validation rules for Accountant model (**validateAccountantRules**) only validate the properties of the Accountant class.
+*   The base class Employee is validated using the Employee validation rules.
