@@ -175,6 +175,7 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
                 .Exec();
 };
 ```
+
 **Populate models**
 
 ```typescript
