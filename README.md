@@ -120,7 +120,7 @@
 **Asynchronous validation**
 
 ```typescript
-    var validationResult = = await new ValidatorAsync(model).Validate(validateEmployeeRules);
+    var validationResult = await new ValidatorAsync(model).Validate(validateEmployeeRules);
 ```
 
 **Validation result**
