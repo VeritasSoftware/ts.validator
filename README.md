@@ -120,7 +120,7 @@
 **Asynchronous validation**
 
 ```typescript
-    var validationResult = await new ValidatorAsync(model).Validate(validateEmployeeRules);
+    var validationResult = await new Validator(model).ValidateAsync(validateEmployeeRules);
 ```
 
 **Validation result**
@@ -147,6 +147,7 @@
 *   First, an object of Employee model is created and the data for the properties populated.
 *   The **rules** for Employee validation are laid in the **validateEmployeeRules** function, using the **IValidator<T>** interface the framework provides.
 *   The rules are the same for both Sync and Async.
+*   For Sync and Async validation, the **Validate** and **ValidateAsync** methods on the framework class **Validator** are used.
 *   The Employee object is passed to this class and goes through the validation rules laid.
 *   Each validation rule comprises of a property on which the validation will apply, a message for any error and an identifier string for the error.
 *   The **identifier string** is used to **group messages** together for a field.

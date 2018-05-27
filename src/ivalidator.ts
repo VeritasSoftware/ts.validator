@@ -34,7 +34,7 @@ export interface IValidatorSync<T> {
 }
 
 export interface IValidatorAsync<T> {
-    Validate(action: Func<IValidator<T>, IValidationResult>): Promise<IValidationResult>;
+    ValidateAsync(action: Func<IValidator<T>, IValidationResult>): Promise<IValidationResult>;
 }
 
 export interface Action<T> {

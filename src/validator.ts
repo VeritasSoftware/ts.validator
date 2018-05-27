@@ -291,24 +291,7 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
     }  
 }
 
-export class ValidatorAsync<T> implements IValidatorAsync<T> {
-    _model: T;    
-
-    constructor(model: T)
-    {
-        this._model = model;        
-    }
-
-    async Validate(rules: Func<IValidator<T>, ValidationResult>): Promise<ValidationResult> {
-        var promise = new Promise<ValidationResult>((resolve, reject) => {
-            resolve(rules(new ObjectValidator<T>(this._model)));
-        });
-        
-        return promise;
-    }
-}
-
-export class Validator<T> implements IValidatorSync<T> {
+export class Validator<T> implements IValidatorSync<T>, IValidatorAsync<T> {
     _model: T;    
 
     constructor(model: T)
@@ -318,5 +301,13 @@ export class Validator<T> implements IValidatorSync<T> {
 
     Validate(rules: Func<IValidator<T>, ValidationResult>): ValidationResult {
         return rules(new ObjectValidator<T>(this._model));
+    }
+
+    async ValidateAsync(rules: Func<IValidator<T>, ValidationResult>): Promise<ValidationResult> {
+        var promise = new Promise<ValidationResult>((resolve, reject) => {
+            resolve(rules(new ObjectValidator<T>(this._model)));
+        });
+        
+        return promise;
     }
 }
