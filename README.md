@@ -226,4 +226,4 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
 
 *   The **Accountant** model inherits from **Employee**.
 *   The validation rules for Accountant model (**validateAccountantRules**) only validate the properties of the Accountant class.
-*   The base class Employee is validated using the Employee validation rules.
+*   The base class Employee is validated using **Base** and **BaseAsync** methods and the Employee validation rules.
