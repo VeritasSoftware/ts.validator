@@ -122,7 +122,7 @@
                 .If(m => m.Super != null, validator => validator
                                                                 .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
                                                                 .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
-                                                    .Exec())
+                                                       .Exec())
                 .If(m => m.Email != '', validator => 
                                                     validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
                                         .Exec())  
@@ -166,7 +166,7 @@
 *   The Employee model has CreditCard and Super as the child models.
 *   First, an object of Employee model is created and the data for the properties populated.
 *   The **rules** for Employee validation are laid using the **Validator** and the **ValidatorAsync** classes the framework provides.
-*   The **rules** are laid the same way for both Sync and Async.
+*   The rules are laid the same way for both Sync and Async.
 *   The Employee object is passed to this class and goes through the validation rules laid.
 *   Each validation rule comprises of a property on which the validation will apply, a message for any error and an identifier string for the error.
 *   The **identifier string** is used to **group messages** together for a field.
