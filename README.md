@@ -114,7 +114,7 @@
 **Synchronous validation**
 
 ```typescript
-    var validationResult = var validationResult = new Validator(model).Validate(validateEmployeeRules);   
+    var validationResult = new Validator(model).Validate(validateEmployeeRules);   
 ```
 
 **Asynchronous validation**
