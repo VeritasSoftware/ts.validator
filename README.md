@@ -23,6 +23,10 @@
 | Email        | Used to test if a string property is a valid email address.                    |
 | Exec         | Returns the validation result.                                                 |
 
+*   These **rules** are used to lay the validation rules for any model.
+*   These rules can be chained in a **fluent** manner.
+*   These rules are available via **IValidator\<T\>** interface the framework provides. 
+
 **Sample usage:**
 
 **Models**
