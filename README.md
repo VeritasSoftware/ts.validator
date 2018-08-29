@@ -21,7 +21,7 @@
 | NotMatches   | Used to test if a string property does not match a regular expression.         |
 | CreditCard   | Used to test if a number property is a valid credit card number.               |
 | Email        | Used to test if a string property is a valid email address.                    |
-| Exec         | Returns the validation result.                                                 |
+| ToResult     | Returns the validation result.                                                 |
 
 *   These **rules** are used to lay the validation rules for any model.
 *   These rules can be chained in a **fluent** manner.
@@ -64,25 +64,25 @@
           .If(m => m.Super != null, validator => validator
                                                           .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
                                                           .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
-                                                .Exec())
+                                                .ToResult())
           .If(m => m.Email != '', validator => 
                                               validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
-                                  .Exec())  
+                                  .ToResult())  
           .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "CreditCard.Required")
           .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
                       validator => validator
                                           .ForEach(m => m.CreditCards, validator => 
                                                                             validator.CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")                                                                                         
-                                                                      .Exec())
-                                  .Exec())
+                                                                      .ToResult())
+                                  .ToResult())
         .If(m => m.Password != '', validator => 
                                         validator.For(m => m.Password, passwordValidator =>
                                                                           passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
                                                                                            .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3")
                                                                                            .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used")
-                                                                      .Exec())
-                                        .Exec())                                                                                                                    
-    .Exec();
+                                                                      .ToResult())
+                                        .ToResult())                                                                                                                    
+    .ToResult();
  };
 ```
 
@@ -173,10 +173,10 @@ Let us say there is a class Accountant that inherits from Employee.
 **Validation rules**
 
 ```typescript
-var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
-        return validator
-                    .NotEmpty(m => m.Code, "Should not be empty")
-                .Exec();
+ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
+  return validator
+            .NotEmpty(m => m.Code, "Should not be empty")
+        .ToResult();
 };
 ```
 

@@ -169,7 +169,7 @@ export class ObjectValidator<T> implements IValidator<T> {
         }   
     }    
 
-    Exec(): ValidationResult {
+    ToResult(): ValidationResult {
         return new ValidationResult(this._validationErrors);
     }
 }
@@ -268,7 +268,7 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
         return this;
     }
 
-    Exec(): ValidationResult {
+    ToResult(): ValidationResult {
         return new ValidationResult(this._validationErrors);
     }
 

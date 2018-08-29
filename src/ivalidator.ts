@@ -12,7 +12,7 @@ export interface IValidator<T> {
     NotMatches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier?: string): IValidator<T>;
     CreditCard(predicate: Func<T, number>, message: string, errorIdentifier?: string): IValidator<T>;
     Email(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;   
-    Exec(): IValidationResult;
+    ToResult(): IValidationResult;
 }
 
 export interface IRuleSetValidator<T, TProperty>{
@@ -26,7 +26,7 @@ export interface IRuleSetValidator<T, TProperty>{
     NotMatches(regex: string, message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
     CreditCard(message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
     Email(message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
-    Exec(): IValidationResult; 
+    ToResult(): IValidationResult; 
 }
 
 export interface IValidatorSync<T> {
