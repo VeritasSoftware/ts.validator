@@ -66,7 +66,8 @@
                                                       .ToResult())
         .ToResult();
  };
-
+``` 
+```typescript
  var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
     return validator                              
           .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
