@@ -27,6 +27,18 @@ export class ObjectValidator<T> implements IValidator<T> {
         return this;
     }
 
+    ForType<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IValidator<TProperty>, IValidationResult>): IValidator<T> {
+        var val = predicate(this._model);
+
+        var validator = new ObjectValidator<TProperty>(val);
+
+        var errorResult = ruleSet(validator);
+
+        this.addErrors(errorResult.Errors);
+
+        return this;
+    }
+
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 

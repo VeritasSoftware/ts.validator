@@ -11,6 +11,7 @@
 | If           | Used for program flow. The then part is only evaluated if the if part is true. |
 | ForEach      | Used to iterate and apply validations to an array.                             |
 | For          | Used to stack multiple validations against a single property.                  |
+| ForType      | Used to chain validation rules for a type against a single property.           |
 | Required     | Used to test if a property is true to a conditon.                              |
 | NotNull      | Used to test if a property is not null.                                        |
 | IsNull       | Used to test if a property is null.                                            |
@@ -55,16 +56,24 @@
 **Validation rules**
 
 ```typescript
+ var validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
+  return validator
+            .NotNull(m => m.Name, "Should not be null", "Super.Name.Null")
+            .NotNull(m => m.Code, "Should not be null", "Super.Code.Null")
+            .If(m => m.Name != null && m.Code != null, validator => validator 
+                                                          .NotEmpty(m => m.Name, "Should not be empty", "Super.Name.Empty")
+                                                          .Matches(m => m.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
+                                                      .ToResult())
+        .ToResult();
+ };
+
  var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
     return validator                              
           .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
           .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
           .NotNull(m => m.Super, "Should not be null", "Super.Null")
           .NotEmpty(m => m.Email, "Should not be empty", "Employee.Email.Empty")
-          .If(m => m.Super != null, validator => validator
-                                                          .NotEmpty(m => m.Super.Name, "Should not be empty", "Super.Code.Empty")
-                                                          .Matches(m => m.Super.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
-                                                .ToResult())
+          .If(m => m.Super != null, validator => validator.ForType(m => m.Super, validateSuperRules).ToResult())
           .If(m => m.Email != '', validator => 
                                               validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
                                   .ToResult())  
@@ -144,19 +153,20 @@
     var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
 ```
 
-### Summary of above code snippets
+### Summary of above code snippetson
 
 *   The models are **Employee**, **Credit Card**, **Super**.
 *   The Employee model has CreditCard and Super as the child models.
 *   First, an object of Employee model is created and the data for the properties populated.
-*   The **rules** for Employee validation are laid in the **validateEmployeeRules** function, using the **IValidator\<T\>** interface the framework provides.
+*   The **rules** for Super and Employee validation are laid in the **validateSuperRules** and **validateEmployeeRules** function, using the **IValidator\<T\>** interface the framework provides.
+*   The Super rules are used in the Employee validation.
 *   The rules are the same for both Sync and Async.
 *   For Sync and Async validation, the **Validate** and **ValidateAsync** methods on the framework class **Validator** are used.
 *   The Employee object is passed to this class and goes through the validation rules laid.
 *   Each validation rule comprises of a property on which the validation will apply, a message for any error and an identifier string for the error.
 *   The **identifier string** is used to **group messages** together for a field.
 *   The framework provides an API called **IdentifierStartsWith** which fetches all the validation errors for a particular identifier starts with the text.
-*   Eg. “Super.Code” will fetch all errors whose identifier starts with Super.Code.
+*   Eg. “Super” will fetch all errors whose identifier starts with Super.
 
 ## Inheritance support
 
