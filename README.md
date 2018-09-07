@@ -2,6 +2,8 @@
 
 ## TypeScript based generic validation framework
 
+[**NPM package**](https://www.npmjs.com/package/ts.validator.fluent)
+
 [**Demo Angular 6 CLI app using the framework**](https://github.com/VeritasSoftware/ts-validator-app-angular6)
 
 [**Article on framework**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
