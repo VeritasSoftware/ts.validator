@@ -58,6 +58,11 @@
 **Validation rules**
 
 ```typescript
+/* Install npm package ts.validator.fluent and then import like below */
+import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dist';
+```
+
+```typescript
  var validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
    return validator
             .NotNull(m => m.Name, "Should not be null", "Super.Name.Null")
