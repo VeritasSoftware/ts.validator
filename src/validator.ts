@@ -63,7 +63,7 @@ export class Validator<T> implements IValidatorSync<T>, IValidatorAsync<T> {
     }
 }
 
-class BaseRules<T> {
+export class BaseRules<T> {
     _model: T;
     _rules: Func<IValidator<T>, ValidationResult>;
 

@@ -1,4 +1,5 @@
-import * as cloneDeep from 'lodash/cloneDeep';
+//import * as cloneDeep from 'lodash/cloneDeep';
+import * as _ from 'lodash';
 
 export class TypeFactory {
     static dictionary: Array<[string, any]> = new Array<[string, any]>();
@@ -9,7 +10,7 @@ export class TypeFactory {
         if (clonedModel != null && clonedModel.length > 0) {
             return clonedModel[0][1];
         }
-        var clone = cloneDeep(model);                        
+        var clone = _.cloneDeep(model);                        
         this.dictionary.push([typeOf.toString(), clone]);
         findPropertyPath(clone);
         return clone;

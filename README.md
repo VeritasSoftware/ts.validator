@@ -1,4 +1,4 @@
-# ts.validator
+# ts.validator.fluent
 
 ## TypeScript based generic validation framework
 
