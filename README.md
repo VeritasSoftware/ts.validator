@@ -8,7 +8,7 @@
 
 [**Article on framework**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
 
-| API          | Description                                                                    |
+| Rules        | Description                                                                    |
 | ------------ | ------------------------------------------------------------------------------ |
 | If           | Used for program flow. The then part is only evaluated if the if part is true. |
 | ForEach      | Used to iterate and apply validations to an array.                             |
@@ -17,14 +17,26 @@
 | Required     | Used to test if a property is true to a conditon.                              |
 | NotNull      | Used to test if a property is not null.                                        |
 | IsNull       | Used to test if a property is null.                                            |
-| NotEmpty     | Used to test if a string property is not empty.                                |
-| IsEmpty      | Used to test if a string property is empty.                                    |
-| Length       | Used to test if a string length is between specified lengths.                  |
-| Matches      | Used to test if a string property matches a regular expression.                |
-| NotMatches   | Used to test if a string property does not match a regular expression.         |
 | CreditCard   | Used to test if a number property is a valid credit card number.               |
-| Email        | Used to test if a string property is a valid email address.                    |
 | ToResult     | Returns the validation result.                                                 |
+
+| String Rules   | Description                                                                    |
+| ------------   | ------------------------------------------------------------------------------ |
+| NotEmpty       | Used to test if a string property is not empty.                                |
+| IsEmpty        | Used to test if a string property is empty.                                    |
+| Length         | Used to test if a string length is between specified lengths.                  |
+| Matches        | Used to test if a string property matches a regular expression.                |
+| NotMatches     | Used to test if a string property does not match a regular expression.         |
+| Email          | Used to test if a string property is a valid email address.                    |
+| IsLowercase    | Used to test if a string property is lower case.                               |
+| IsUppercase    | Used to test if a string property is upper case.                               |
+| IsMixedcase    | Used to test if a string property is mixed case.                               |
+| IsNumeric      | Used to test if a string property is a numeric.                                |
+| IsAlpha        | Used to test if a string property is a alpha.                                  |
+| IsAlphaNumeric | Used to test if a string property is a alpha numeric.                          |
+| IsGuid         | Used to test if a string property is a guid/uuid.                              |
+| IsBase64       | Used to test if a string property is base64.                                   |
+| IsUrl          | Used to test if a string property is an url.                                   |
 
 *   These **rules** are used to lay the validation rules for any model.
 *   These rules can be chained in a **fluent** manner.

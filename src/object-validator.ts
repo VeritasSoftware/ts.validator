@@ -147,6 +147,126 @@ export class ObjectValidator<T> implements IValidator<T> {
         return this;
     }    
 
+    IsLowercase(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^[a-z]+$/) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsUppercase(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^[A-Z]+$/) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsMixedcase(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^(?=.*?[a-z])(?=.*?[A-Z])[a-zA-Z]+$/) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    Contains(predicate: Func<T, string>, subString: string, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.indexOf(subString) < 0) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsNumeric(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^\d+$/) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsAlpha(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^[a-zA-Z]+$/) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsAlphaNumeric(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^[a-zA-Z0-9]+$/) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsGuid(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsBase64(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/i) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsUrl(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
+        var val = predicate(this._model);
+
+        if (val.match(/^\s*$/) == null)
+        {
+            if (val.match(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/) == null) {                                
+                this.processErrors(predicate, val, message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
     Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
@@ -269,6 +389,106 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
         if (this._property.toString().match(/(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/) == null) {              
             this.processErrors(this._property, message, errorIdentifier);                
         }
+        return this;
+    }
+
+    IsLowercase(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^[a-z]+$/) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsUppercase(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^[A-Z]+$/) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsMixedcase(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^(?=.*?[a-z])(?=.*?[A-Z])[a-zA-Z]+$/) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsNumeric(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^\d+$/) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsAlpha(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^[a-zA-Z]+$/) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsAlphaNumeric(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^[a-zA-Z0-9]+$/) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsGuid(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsBase64(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/i) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    IsUrl(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().match(/((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&=\+\$,\w]+@)?[A-Za-z0-9\.\-]+|(?:www\.|[\-;:&=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)/) == null) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
+        return this;
+    }
+
+    Contains(subString: string, message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {        
+        if (this._property.toString().match(/^\s*$/) == null)
+        {
+            if (this._property.toString().indexOf(subString) < 0) {                                
+                this.processErrors(this._property.toString(), message, errorIdentifier);
+            }
+        }        
         return this;
     }
 
