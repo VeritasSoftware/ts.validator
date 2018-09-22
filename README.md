@@ -1,12 +1,10 @@
 # ts.validator.fluent
 
-## TypeScript based generic validation framework
+## TypeScript based generic validation framework library
 
 [**NPM package**](https://www.npmjs.com/package/ts.validator.fluent)
 
 [**Demo Angular 6 CLI app using the framework**](https://github.com/VeritasSoftware/ts-validator-app-angular6)
-
-[**Article on framework**](https://www.c-sharpcorner.com/article/ts-validator-typescript-based-generic-validation-framework/)
 
 | Rules        | Description                                                                    |
 | ------------ | ------------------------------------------------------------------------------ |
@@ -89,7 +87,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
  };
 ``` 
 ```typescript
-   var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {
+ var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {
        return validator
             .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
             .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
@@ -116,7 +114,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
                       validator => validator
                                           .ForEach(m => m.CreditCards, validateCreditCardRules)
                                   .ToResult())
-        .If(m => m.Password != '', validator => 
+          .If(m => m.Password != '', validator => 
                                         validator.For(m => m.Password, passwordValidator =>
                                                                           passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
                                                                                            .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3")
