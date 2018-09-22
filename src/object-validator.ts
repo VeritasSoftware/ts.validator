@@ -224,7 +224,7 @@ export class ObjectValidator<T> implements IValidator<T> {
 
         if (val.match(/^\s*$/) == null)
         {
-            if (val.match(/^[a-zA-Z0-9]+$/) == null) {                                
+            if (val.match(/^(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z0-9]+$/) == null) {                                
                 this.processErrors(predicate, val, message, errorIdentifier);
             }
         }        
@@ -457,7 +457,7 @@ class RuleSetValidator<T, TProperty> implements IRuleSetValidator<T, TProperty> 
     IsAlphaNumeric(message: string, errorIdentifier: string = null): IRuleSetValidator<T, TProperty> {
         if (this._property.toString().match(/^\s*$/) == null)
         {
-            if (this._property.toString().match(/^[a-zA-Z0-9]+$/) == null) {                                
+            if (this._property.toString().match(/^(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z0-9]+$/) == null) {                                
                 this.processErrors(this._property.toString(), message, errorIdentifier);
             }
         }        
