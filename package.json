@@ -1,12 +1,12 @@
 {
   "name": "ts.validator.fluent",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "TypeScript based generic, fluent validation framework.",
   "main": "dist/ts.validator.fluent.js",
   "types": "dist/ts.validator.fluent.d.ts",
   "license": "MIT",
   "homepage": "https://github.com/VeritasSoftware/ts.validator",
-  "keywords": ["fluent", "typescript", "validation", "framework", "generic", "validator"],
+  "keywords": ["fluent", "typescript", "validation", "framework", "generic", "validator", "package", "library"],
   "scripts": {
     "build": "tsc"
   },

@@ -18,6 +18,17 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     Email(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
     If(predicate: Func<T, boolean>, then: Func<IValidator<T>, IValidationResult>): IValidator<T>;
     ForEach<TArray>(predicate: Func<T, Array<TArray>>, action: Func<IValidator<TArray>, IValidationResult>): IValidator<T>;
+    IsLowercase(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsUppercase(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsMixedcase(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    Contains(predicate: Func<T, string>, subString: string, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumeric(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsAlpha(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsAlphaNumeric(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsGuid(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsBase64(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsUrl(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsCountryCode(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
     Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier?: string): IValidator<T>;
     private getPropertyName(expression);
     private addErrors(errors);
