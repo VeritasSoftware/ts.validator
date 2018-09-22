@@ -177,7 +177,7 @@ var ObjectValidator = /** @class */ (function () {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         var val = predicate(this._model);
         if (val.match(/^\s*$/) == null) {
-            if (val.match(/^[a-zA-Z0-9]+$/) == null) {
+            if (val.match(/^(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z0-9]+$/) == null) {
                 this.processErrors(predicate, val, message, errorIdentifier);
             }
         }
@@ -383,7 +383,7 @@ var RuleSetValidator = /** @class */ (function () {
     RuleSetValidator.prototype.IsAlphaNumeric = function (message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         if (this._property.toString().match(/^\s*$/) == null) {
-            if (this._property.toString().match(/^[a-zA-Z0-9]+$/) == null) {
+            if (this._property.toString().match(/^(?=.*?[a-zA-Z])(?=.*?\d)[a-zA-Z0-9]+$/) == null) {
                 this.processErrors(this._property.toString(), message, errorIdentifier);
             }
         }
