@@ -20,6 +20,7 @@ export interface IValidator<T> {
     IsGuid(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;  
     IsBase64(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
     IsUrl(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsCountryCode(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>
     Matches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier?: string): IValidator<T>;
     NotMatches(predicate: Func<T, string>, regex: string, message: string, errorIdentifier?: string): IValidator<T>;
     Email(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;    
@@ -47,6 +48,7 @@ export interface IRuleSetValidator<T, TProperty>{
     IsGuid(message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
     IsBase64(message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
     IsUrl(message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
+    IsCountryCode(message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
     Matches(regex: string, message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
     NotMatches(regex: string, message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;
     Email(message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;

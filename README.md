@@ -37,6 +37,7 @@
 | IsGuid         | Used to test if a string property is a guid/uuid.                              |
 | IsBase64       | Used to test if a string property is base64.                                   |
 | IsUrl          | Used to test if a string property is an url.                                   |
+| IsCountryCode | Used to test if a string property is a 2 letter country code.                   |
 
 *   These **rules** are used to lay the validation rules for any model.
 *   These rules can be chained in a **fluent** manner.
