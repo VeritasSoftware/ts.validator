@@ -183,7 +183,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
     var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
 ```
 
-### Summary of above code snippetson
+### Summary of above code snippets
 
 *   The models are **Employee**, **Credit Card**, **Super**.
 *   The Employee model has CreditCard and Super as the child models.
