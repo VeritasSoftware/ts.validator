@@ -213,7 +213,7 @@ Let us say there is a class Accountant that inherits from Employee.
 **Validation rules**
 
 ```typescript
- var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
+var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
   return validator
             .NotEmpty(m => m.Code, "Should not be empty")
         .ToResult();
