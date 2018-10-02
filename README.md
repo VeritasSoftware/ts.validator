@@ -43,11 +43,11 @@
 
 | Date Rules        | Description                                                        |
 | ------------      | ------------------------------------------------------------------ |
-| IsDateAfter       | Used to test if a date is after the specifed date.                 |
-| IsDateOnOrAfter   | Used to test if a date is on or after the specifed date.           |
-| IsDateBefore      | Used to test if a date is before the specifed date.                |
-| IsDateOnOrBefore  | Used to test if a date is on or before the specifed date.          |
-| IsDateBetween     | Used to test if a date is between two specifed dates.              |
+| IsDateAfter       | Used to test if a date is after the specified date.                |
+| IsDateOnOrAfter   | Used to test if a date is on or after the specified date.          |
+| IsDateBefore      | Used to test if a date is before the specified date.               |
+| IsDateOnOrBefore  | Used to test if a date is on or before the specified date.         |
+| IsDateBetween     | Used to test if a date is between two specified dates.             |
 | IsDateLeapYear    | Used to test if a date is in a leap year.                          |
 
 *   These **rules** are used to lay the validation rules for any model.
