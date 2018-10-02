@@ -10,10 +10,10 @@
 | ------------ | ------------------------------------------------------------------------------ |
 | If           | Used for program flow. The then part is only evaluated if the if part is true. |
 | ForEach      | Used to iterate and apply validations to an array.                             |
-| For (deprecated)  | Used to stack multiple validations against a single property.             |
 | ForStringProperty | Used to stack multiple validations against a single string property.      |
 | ForDateProperty   | Used to stack multiple validations against a single Date property.        |
 | ForProperty  | Used to stack multiple validations against a single property.                  |
+| For (deprecated)  | Used to stack multiple validations against a single property.             |
 | ForType      | Used to chain validation rules for a type against a single property.           |
 | Required     | Used to test if a property is true to a conditon.                              |
 | NotNull      | Used to test if a property is not null.                                        |
