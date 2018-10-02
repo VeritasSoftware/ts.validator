@@ -10,7 +10,10 @@
 | ------------ | ------------------------------------------------------------------------------ |
 | If           | Used for program flow. The then part is only evaluated if the if part is true. |
 | ForEach      | Used to iterate and apply validations to an array.                             |
-| For          | Used to stack multiple validations against a single property.                  |
+| For (deprecated)  | Used to stack multiple validations against a single property.             |
+| ForStringProperty | Used to stack multiple validations against a single string property.      |
+| ForDateProperty   | Used to stack multiple validations against a single Date property.        |
+| ForProperty  | Used to stack multiple validations against a single property.                  |
 | ForType      | Used to chain validation rules for a type against a single property.           |
 | Required     | Used to test if a property is true to a conditon.                              |
 | NotNull      | Used to test if a property is not null.                                        |
@@ -18,25 +21,34 @@
 | CreditCard   | Used to test if a number property is a valid credit card number.               |
 | ToResult     | Returns the validation result.                                                 |
 
-| String Rules   | Description                                                                    |
-| ------------   | ------------------------------------------------------------------------------ |
-| NotEmpty       | Used to test if a string property is not empty.                                |
-| IsEmpty        | Used to test if a string property is empty.                                    |
-| Length         | Used to test if a string length is between specified lengths.                  |
-| Matches        | Used to test if a string property matches a regular expression.                |
-| NotMatches     | Used to test if a string property does not match a regular expression.         |
-| Email          | Used to test if a string property is a valid email address.                    |
-| IsLowercase    | Used to test if a string property is lower case.                               |
-| IsUppercase    | Used to test if a string property is upper case.                               |
-| IsMixedcase    | Used to test if a string property is mixed case.                               |
-| IsNumeric      | Used to test if a string property is a numeric.                                |
-| IsAlpha        | Used to test if a string property is a alpha.                                  |
-| IsAlphaNumeric | Used to test if a string property is a alpha numeric.                          |
-| IsGuid         | Used to test if a string property is a guid/uuid.                              |
-| IsBase64       | Used to test if a string property is base64.                                   |
-| IsUrl          | Used to test if a string property is an url.                                   |
-| IsCountryCode  | Used to test if a string property is a 2 letter country code.                  |
-| Contains       | Used to test if a sub string is contained in the string property.              |
+| String Rules   | Description                                                           |
+| ------------   | --------------------------------------------------------------------- |
+| NotEmpty       | Used to test if a string is not empty.                                |
+| IsEmpty        | Used to test if a string is empty.                                    |
+| Length         | Used to test if a string length is between specified lengths.         |
+| Matches        | Used to test if a string matches a regular expression.                |
+| NotMatches     | Used to test if a string does not match a regular expression.         |
+| Email          | Used to test if a string is a valid email address.                    |
+| IsLowercase    | Used to test if a string is lower case.                               |
+| IsUppercase    | Used to test if a string is upper case.                               |
+| IsMixedcase    | Used to test if a string is mixed case.                               |
+| IsNumeric      | Used to test if a string is a numeric.                                |
+| IsAlpha        | Used to test if a string is a alpha.                                  |
+| IsAlphaNumeric | Used to test if a string is a alpha numeric.                          |
+| IsGuid         | Used to test if a string is a guid/uuid.                              |
+| IsBase64       | Used to test if a string is base64.                                   |
+| IsUrl          | Used to test if a string is an url.                                   |
+| IsCountryCode  | Used to test if a string is a 2 letter country code.                  |
+| Contains       | Used to test if a sub string is contained in the string .             |
+
+| Date Rules        | Description                                                        |
+| ------------      | ------------------------------------------------------------------ |
+| IsDateAfter       | Used to test if a date is after the specifed date.                 |
+| IsDateOnOrAfter   | Used to test if a date is on or after the specifed date.           |
+| IsDateBefore      | Used to test if a date is before the specifed date.                |
+| IsDateOnOrBefore  | Used to test if a date is on or before the specifed date.          |
+| IsDateBetween     | Used to test if a date is between two specifed dates.              |
+| IsDateLeapYear    | Used to test if a date is in a leap year.                          |
 
 *   These **rules** are used to lay the validation rules for any model.
 *   These rules can be chained in a **fluent** manner.
@@ -87,15 +99,17 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
  };
 ``` 
 ```typescript
- var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {
-       return validator
+ var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {  
+  return validator
             .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
             .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
-            .If(m => m.Name != null && m.Number > 0, validator => validator 
+            .NotNull(m => m.ExpiryDate, "Should not be null", "CreditCard.ExpiryDate.Null")
+            .If(m => m.Name != null && m.Number > 0 && m.ExpiryDate != null, validator => validator 
                                                           .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
                                                           .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                          .IsDateOnOrBefore(m => m.ExpiryDate, new Date(), "Should be on or before today's date", "CreditCard.ExpiryDate.Invalid")
                                                       .ToResult())
-       .ToResult();
+        .ToResult();
  };
 ```
 ```typescript
@@ -109,18 +123,18 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
           .If(m => m.Email != '', validator => 
                                               validator.Email(m => m.Email, "Should not be invalid", "Employee.Email.Invalid")
                                   .ToResult())  
-          .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "CreditCard.Required")
+          .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "Employee.CreditCards.Required")
           .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
                       validator => validator
                                           .ForEach(m => m.CreditCards, validateCreditCardRules)
                                   .ToResult())
-          .If(m => m.Password != '', validator => 
-                                        validator.For(m => m.Password, passwordValidator =>
-                                                                          passwordValidator.Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid")
-                                                                                           .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3")
-                                                                                           .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used")
-                                                                      .ToResult())
-                                        .ToResult())                                                                                                                    
+          .If(m => m.Password != '', validator => validator
+                                          .ForStringProperty(m => m.Password, passwordValidator => passwordValidator
+                                                  .Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Employee.Password.Strength")
+                                                  .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Employee.Password.Length")
+                                                  .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used", "Employee.Password.AlreadyUsed")
+                                              .ToResult())
+                                     .ToResult())                                                                                                                    
     .ToResult();
  };
 ```
@@ -137,13 +151,17 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
     model.PreviousPasswords.push("sD4A1");
     model.PreviousPasswords.push("sD4A2");
 
+    var expiryDate = new Date();
+
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
     masterCard.Name = "John Doe"
+    masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
     amexCard.Name = "John Doe"
+    amexCard.ExpiryDate = expiryDate;
     model.CreditCards.push(masterCard);
     model.CreditCards.push(amexCard);
 
@@ -235,13 +253,17 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
     accountant.PreviousPasswords.push("sD4A1");
     accountant.PreviousPasswords.push("sD4A2");
 
+    var expiryDate = new Date();
+
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
     masterCard.Number = 5105105105105100;
     masterCard.Name = "John Doe"
+    masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
     amexCard.Number = 371449635398431;
-    amexCard.Name = "John Doe"
+    amexCard.Name = "John Doe";
+    amexCard.ExpiryDate = expiryDate;
     accountant.CreditCards.push(masterCard);
     accountant.CreditCards.push(amexCard);
 

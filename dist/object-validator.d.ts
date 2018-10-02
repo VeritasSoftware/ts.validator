@@ -1,4 +1,4 @@
-import { IValidator, IValidationResult, Func, Func2, IRuleSetValidator } from './ivalidator';
+import { IValidator, IValidationResult, Func, Func2, IRuleSetValidator, IRuleSetValidatorBase, IDateRuleSetValidator, IStringRuleSetValidator } from './ivalidator';
 import { ValidationResult, ValidationError } from './validation-result';
 export declare class ObjectValidator<T> implements IValidator<T> {
     _model: T;
@@ -6,6 +6,9 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     _clonedModel: T;
     constructor(model: T);
     For<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidator<T, TProperty>, IValidationResult>): IValidator<T>;
+    ForProperty<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidatorBase<T, TProperty>, IValidationResult>): IValidator<T>;
+    ForDateProperty(predicate: Func<T, Date>, ruleSet: Func<IDateRuleSetValidator<T>, IValidationResult>): IValidator<T>;
+    ForStringProperty(predicate: Func<T, string>, ruleSet: Func<IStringRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForType<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IValidator<TProperty>, IValidationResult>): IValidator<T>;
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
     IsNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
@@ -29,6 +32,12 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     IsBase64(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
     IsUrl(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
     IsCountryCode(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsDateAfter(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
+    IsDateOnOrAfter(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
+    IsDateBefore(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
+    IsDateOnOrBefore(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
+    IsDateBetween(predicate: Func<T, Date>, startDate: Date, endDate: Date, inclusive: boolean, message: string, errorIdentifier?: string): IValidator<T>;
+    IsDateLeapYear(predicate: Func<T, Date>, message: string, errorIdentifier?: string): IValidator<T>;
     Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier?: string): IValidator<T>;
     private getPropertyName(expression);
     private addErrors(errors);
