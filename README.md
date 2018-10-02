@@ -107,7 +107,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
             .If(m => m.Name != null && m.Number > 0 && m.ExpiryDate != null, validator => validator 
                                                           .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
                                                           .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
-                                                          .IsDateOnOrBefore(m => m.ExpiryDate, new Date(), "Should be on or before today's date", "CreditCard.ExpiryDate.Invalid")
+                                                          .IsDateOnOrAfter(m => m.ExpiryDate, new Date(), "Should be on or after today's date", "CreditCard.ExpiryDate.Invalid")
                                                       .ToResult())
         .ToResult();
  };
