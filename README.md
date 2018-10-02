@@ -32,14 +32,14 @@
 | IsLowercase    | Used to test if a string is lower case.                               |
 | IsUppercase    | Used to test if a string is upper case.                               |
 | IsMixedcase    | Used to test if a string is mixed case.                               |
-| IsNumeric      | Used to test if a string is a numeric.                                |
-| IsAlpha        | Used to test if a string is a alpha.                                  |
-| IsAlphaNumeric | Used to test if a string is a alpha numeric.                          |
-| IsGuid         | Used to test if a string is a guid/uuid.                              |
+| IsNumeric      | Used to test if a string is numeric.                                  |
+| IsAlpha        | Used to test if a string is alpha.                                    |
+| IsAlphaNumeric | Used to test if a string is alpha numeric.                            |
+| IsGuid         | Used to test if a string is guid/uuid.                                |
 | IsBase64       | Used to test if a string is base64.                                   |
 | IsUrl          | Used to test if a string is an url.                                   |
 | IsCountryCode  | Used to test if a string is a 2 letter country code.                  |
-| Contains       | Used to test if a sub string is contained in the string .             |
+| Contains       | Used to test if a sub string is contained in the string.              |
 
 | Date Rules        | Description                                                        |
 | ------------      | ------------------------------------------------------------------ |
