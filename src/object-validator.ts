@@ -26,19 +26,7 @@ export class ObjectValidator<T> implements IValidator<T> {
         this.addErrors(errorResult.Errors);
 
         return this;
-    }        
-    
-    ForProperty<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidatorBase<T, TProperty>, IValidationResult>) : IValidator<T> {
-        var val = predicate(this._model);
-
-        var errorResult: IValidationResult;                     
-        
-        errorResult = ruleSet(new RuleSetValidator<T, TProperty>(val, this._model, predicate));
-        
-        this.addErrors(errorResult.Errors);
-
-        return this;
-    }
+    }            
 
     ForDateProperty(predicate: Func<T, Date>, ruleSet: Func<IDateRuleSetValidator<T>, IValidationResult>) : IValidator<T> {
         var val = predicate(this._model);

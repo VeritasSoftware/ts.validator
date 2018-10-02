@@ -26,13 +26,6 @@ var ObjectValidator = /** @class */ (function () {
         this.addErrors(errorResult.Errors);
         return this;
     };
-    ObjectValidator.prototype.ForProperty = function (predicate, ruleSet) {
-        var val = predicate(this._model);
-        var errorResult;
-        errorResult = ruleSet(new RuleSetValidator(val, this._model, predicate));
-        this.addErrors(errorResult.Errors);
-        return this;
-    };
     ObjectValidator.prototype.ForDateProperty = function (predicate, ruleSet) {
         var val = predicate(this._model);
         var errorResult;

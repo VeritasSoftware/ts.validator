@@ -1,4 +1,4 @@
-import { IValidator, IValidationResult, Func, Func2, IRuleSetValidator, IRuleSetValidatorBase, IDateRuleSetValidator, IStringRuleSetValidator } from './ivalidator';
+import { IValidator, IValidationResult, Func, Func2, IRuleSetValidator, IDateRuleSetValidator, IStringRuleSetValidator } from './ivalidator';
 import { ValidationResult, ValidationError } from './validation-result';
 export declare class ObjectValidator<T> implements IValidator<T> {
     _model: T;
@@ -6,7 +6,6 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     _clonedModel: T;
     constructor(model: T);
     For<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidator<T, TProperty>, IValidationResult>): IValidator<T>;
-    ForProperty<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidatorBase<T, TProperty>, IValidationResult>): IValidator<T>;
     ForDateProperty(predicate: Func<T, Date>, ruleSet: Func<IDateRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForStringProperty(predicate: Func<T, string>, ruleSet: Func<IStringRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForType<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IValidator<TProperty>, IValidationResult>): IValidator<T>;

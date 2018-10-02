@@ -2,7 +2,6 @@ export interface IValidator<T> {
     For<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidator<T, TProperty>, IValidationResult>): IValidator<T>;
     ForDateProperty(predicate: Func<T, Date>, ruleSet: Func<IDateRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForStringProperty(predicate: Func<T, string>, ruleSet: Func<IStringRuleSetValidator<T>, IValidationResult>): IValidator<T>;
-    ForProperty<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidatorBase<T, TProperty>, IValidationResult>): IValidator<T>;
     ForType<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IValidator<TProperty>, IValidationResult>): IValidator<T>;
     If(predicate: Func<T, boolean>, then: Func<IValidator<T>, IValidationResult>): IValidator<T>;
     ForEach<TArray>(predicate: Func<T, Array<TArray>>, action: Func<IValidator<TArray>, IValidationResult>): IValidator<T>;
