@@ -71,8 +71,9 @@
     class CreditCard {
         Number: number;
         Name: string;
+        ExpiryDate: Date;
     }
-
+ 
     class Super {
         Name: string;
         Code: string;
