@@ -31,6 +31,7 @@ export interface IValidator<T> {
     IsEmpty(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;  
 
     /* date Rules */
+    IsDateOn(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateAfter(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateOnOrAfter(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateBefore(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
@@ -74,6 +75,7 @@ export interface IDateRuleSetValidator<T> extends IRuleSetValidatorBase<T, Date>
     NotNull(message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;
     IsNull(message: string, errorIdentifier?: string): IDateRuleSetValidator<T>; 
 
+    IsDateOn(date: Date, message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;
     IsDateAfter(date: Date, message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;
     IsDateOnOrAfter(date: Date, message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;
     IsDateBefore(date: Date, message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;   

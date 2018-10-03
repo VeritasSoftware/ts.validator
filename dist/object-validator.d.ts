@@ -31,6 +31,7 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     IsBase64(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
     IsUrl(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
     IsCountryCode(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsDateOn(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateAfter(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateOnOrAfter(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateBefore(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;

@@ -42,6 +42,7 @@
 
 | Date Rules        | Description                                                        |
 | ------------      | ------------------------------------------------------------------ |
+| IsDateOn          | Used to test if a date is on the specified date.                   |
 | IsDateAfter       | Used to test if a date is after the specified date.                |
 | IsDateOnOrAfter   | Used to test if a date is on or after the specified date.          |
 | IsDateBefore      | Used to test if a date is before the specified date.               |

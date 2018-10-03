@@ -304,6 +304,17 @@ export class ObjectValidator<T> implements IValidator<T> {
         return this;
     }
 
+    IsDateOn(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier: string = null): IValidator<T> {
+        date.setHours(0,0,0,0);
+        var val = predicate(this._model);
+        val.setHours(0,0,0,0);
+
+        if ((val != null) && !(val.getFullYear() == date.getFullYear() && val.getMonth() == date.getMonth() && val.getDate() == date.getDate())) {                                
+            this.processErrors(predicate, val, message, errorIdentifier);
+        }      
+        return this;
+    }
+
     IsDateAfter(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier: string = null): IValidator<T> {
         date.setHours(0,0,0,0);
         var val = predicate(this._model);
@@ -661,6 +672,15 @@ class DateRuleSetValidator<T> extends RuleSetValidatorBase<T, Date> implements I
         }
         return this;
     }    
+
+    IsDateOn(date: Date, message: string, errorIdentifier: string = null): IDateRuleSetValidator<T> {
+        date.setHours(0,0,0,0);
+        this._property.setHours(0,0,0,0);
+        if ((this._property != null) && !(this._property.getFullYear() == date.getFullYear() && this._property.getMonth() == date.getMonth() && this._property.getDate() == date.getDate())) {                           
+            this.processErrors(this._property.toString(), message, errorIdentifier);
+        }         
+        return this;        
+    }
 
     IsDateAfter(date: Date, message: string, errorIdentifier: string = null): IDateRuleSetValidator<T> {
         date.setHours(0,0,0,0);

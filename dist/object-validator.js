@@ -248,6 +248,16 @@ var ObjectValidator = /** @class */ (function () {
         }
         return this;
     };
+    ObjectValidator.prototype.IsDateOn = function (predicate, date, message, errorIdentifier) {
+        if (errorIdentifier === void 0) { errorIdentifier = null; }
+        date.setHours(0, 0, 0, 0);
+        var val = predicate(this._model);
+        val.setHours(0, 0, 0, 0);
+        if ((val != null) && !(val.getFullYear() == date.getFullYear() && val.getMonth() == date.getMonth() && val.getDate() == date.getDate())) {
+            this.processErrors(predicate, val, message, errorIdentifier);
+        }
+        return this;
+    };
     ObjectValidator.prototype.IsDateAfter = function (predicate, date, message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         date.setHours(0, 0, 0, 0);
@@ -568,6 +578,15 @@ var DateRuleSetValidator = /** @class */ (function (_super) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         if (this._property != null) {
             this.processErrors(this._property, message, errorIdentifier);
+        }
+        return this;
+    };
+    DateRuleSetValidator.prototype.IsDateOn = function (date, message, errorIdentifier) {
+        if (errorIdentifier === void 0) { errorIdentifier = null; }
+        date.setHours(0, 0, 0, 0);
+        this._property.setHours(0, 0, 0, 0);
+        if ((this._property != null) && !(this._property.getFullYear() == date.getFullYear() && this._property.getMonth() == date.getMonth() && this._property.getDate() == date.getDate())) {
+            this.processErrors(this._property.toString(), message, errorIdentifier);
         }
         return this;
     };
