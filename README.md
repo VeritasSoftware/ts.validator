@@ -206,8 +206,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
 
 *   The models are **Employee**, **Credit Card**, **Super**.
 *   The Employee model has CreditCard and Super as the child models.
-*   First, an object of Employee model is created and the data for the properties populated.
-*   The **rules** for Super and Employee validation are laid in the **validateSuperRules**, **validateCreditCardRules** and **validateEmployeeRules** function, using the **IValidator\<T\>** interface the framework provides.
+*   The **rules** for Super, CreditCard and Employee validation are laid in the **validateSuperRules**, **validateCreditCardRules** and **validateEmployeeRules** functions, using the **IValidator\<T\>** interface the framework provides.
 *   The Super and CreditCard rules are chained and used in the Employee validation.
 *   The rules are the same for both Sync and Async.
 *   For Sync and Async validation, the **Validate** and **ValidateAsync** methods on the framework class **Validator** are used.
