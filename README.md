@@ -12,6 +12,7 @@
 | ForEach      | Used to iterate and apply validations to an array.                             |
 | ForStringProperty | Used to stack multiple validations against a single string property.      |
 | ForDateProperty   | Used to stack multiple validations against a single Date property.        |
+| ForNumberProperty | Used to stack multiple validations against a single Number property.      |
 | For (deprecated)  | Used to stack multiple validations against a single property.             |
 | ForType      | Used to chain validation rules for a type against a single property.           |
 | Required     | Used to test if a property is true to a conditon.                              |
