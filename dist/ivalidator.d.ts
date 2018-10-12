@@ -2,6 +2,7 @@ export interface IValidator<T> {
     For<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidator<T, TProperty>, IValidationResult>): IValidator<T>;
     ForDateProperty(predicate: Func<T, Date>, ruleSet: Func<IDateRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForStringProperty(predicate: Func<T, string>, ruleSet: Func<IStringRuleSetValidator<T>, IValidationResult>): IValidator<T>;
+    ForNumberProperty(predicate: Func<T, Number>, ruleSet: Func<INumberRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForType<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IValidator<TProperty>, IValidationResult>): IValidator<T>;
     If(predicate: Func<T, boolean>, then: Func<IValidator<T>, IValidationResult>): IValidator<T>;
     ForEach<TArray>(predicate: Func<T, Array<TArray>>, action: Func<IValidator<TArray>, IValidationResult>): IValidator<T>;
@@ -33,6 +34,12 @@ export interface IValidator<T> {
     IsDateOnOrBefore(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateBetween(predicate: Func<T, Date>, startDate: Date, endDate: Date, inclusive: boolean, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateLeapYear(predicate: Func<T, Date>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberNotEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberLessThan(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberLessThanOrEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberGreaterThan(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberGreaterThanOrEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
     ToResult(): IValidationResult;
 }
 export interface IRuleSetValidatorBase<T, TProperty> {
@@ -71,6 +78,18 @@ export interface IDateRuleSetValidator<T> extends IRuleSetValidatorBase<T, Date>
     IsDateOnOrBefore(date: Date, message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;
     IsDateBetween(startDate: Date, endDate: Date, inclusive: boolean, message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;
     IsDateLeapYear(message: string, errorIdentifier?: string): IDateRuleSetValidator<T>;
+}
+export interface INumberRuleSetValidator<T> extends IRuleSetValidatorBase<T, Number> {
+    Required(must: Func2<Number, T, boolean>, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    NotNull(message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNull(message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNumberEqual(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNumberNotEqual(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNumberLessThan(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNumberLessThanOrEqual(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNumberGreaterThan(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNumberGreaterThanOrEqual(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    CreditCard(message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
 }
 export interface IRuleSetValidator<T, TProperty> {
     Required(must: Func2<TProperty, T, boolean>, message: string, errorIdentifier?: string): IRuleSetValidator<T, TProperty>;

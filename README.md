@@ -50,6 +50,17 @@
 | IsDateBetween     | Used to test if a date is between two specified dates.             |
 | IsDateLeapYear    | Used to test if a date is in a leap year.                          |
 
+| Number Rules                 | Description                                                                |
+| ------------                 | ------------------------------------------------------------------         |
+| IsNumberEqual                | Used to test if a number is equal to a specified number.                   |
+| IsNumberNotEqual             | Used to test if a number is not equal to a specified number.               |
+| IsNumberLessThan             | Used to test if a number is less than a specified number.                  |
+| IsNumberLessThanOrEqual      | Used to test if a number is less than or equal to a specified number.      |
+| IsNumberGreaterThan          | Used to test if a number is greater than a specified number.               |
+| IsNumberGreaterThanOrEqual   | Used to test if a number is greater than or equal to a specified number.   |
+| CreditCard                   | Used to test if a number is a valid credit card number.                    |
+
+
 *   These **rules** are used to lay the validation rules for any model.
 *   These rules can be chained in a **fluent** manner.
 *   These rules are available via **IValidator\<T\>** interface the framework provides. 

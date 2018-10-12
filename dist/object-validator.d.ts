@@ -1,4 +1,4 @@
-import { IValidator, IValidationResult, Func, Func2, IRuleSetValidator, IDateRuleSetValidator, IStringRuleSetValidator } from './ivalidator';
+import { IValidator, IValidationResult, Func, Func2, IRuleSetValidator, IDateRuleSetValidator, IStringRuleSetValidator, INumberRuleSetValidator } from './ivalidator';
 import { ValidationResult, ValidationError } from './validation-result';
 export declare class ObjectValidator<T> implements IValidator<T> {
     _model: T;
@@ -8,6 +8,7 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     For<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IRuleSetValidator<T, TProperty>, IValidationResult>): IValidator<T>;
     ForDateProperty(predicate: Func<T, Date>, ruleSet: Func<IDateRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForStringProperty(predicate: Func<T, string>, ruleSet: Func<IStringRuleSetValidator<T>, IValidationResult>): IValidator<T>;
+    ForNumberProperty(predicate: Func<T, Number>, ruleSet: Func<INumberRuleSetValidator<T>, IValidationResult>): IValidator<T>;
     ForType<TProperty>(predicate: Func<T, TProperty>, ruleSet: Func<IValidator<TProperty>, IValidationResult>): IValidator<T>;
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
     IsNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
@@ -38,6 +39,12 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     IsDateOnOrBefore(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateBetween(predicate: Func<T, Date>, startDate: Date, endDate: Date, inclusive: boolean, message: string, errorIdentifier?: string): IValidator<T>;
     IsDateLeapYear(predicate: Func<T, Date>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberNotEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberLessThan(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberLessThanOrEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberGreaterThan(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNumberGreaterThanOrEqual(predicate: Func<T, Number>, number: Number, message: string, errorIdentifier?: string): IValidator<T>;
     Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier?: string): IValidator<T>;
     private getPropertyName(expression);
     private addErrors(errors);
