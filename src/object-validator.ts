@@ -148,10 +148,10 @@ export class ObjectValidator<T> implements IValidator<T> {
         return this;
     }
 
-    CreditCard(predicate: Func<T, number>, message: string, errorIdentifier: string = null): IValidator<T> {
+    CreditCard(predicate: Func<T, string>, message: string, errorIdentifier: string = null): IValidator<T> {
         var val = predicate(this._model);
 
-        if (val.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
+        if (val.match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
             this.processErrors(predicate, val, message, errorIdentifier);
         }
         return this;

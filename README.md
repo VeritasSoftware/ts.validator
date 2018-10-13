@@ -18,7 +18,6 @@
 | Required     | Used to test if a property is true to a conditon.                              |
 | NotNull      | Used to test if a property is not null.                                        |
 | IsNull       | Used to test if a property is null.                                            |
-| CreditCard   | Used to test if a number property is a valid credit card number.               |
 | ToResult     | Returns the validation result.                                                 |
 
 | String Rules   | Description                                                           |
@@ -40,6 +39,7 @@
 | IsUrl          | Used to test if a string is an url.                                   |
 | IsCountryCode  | Used to test if a string is a 2 letter country code.                  |
 | Contains       | Used to test if a sub string is contained in the string.              |
+| CreditCard     | Used to test if a number is a valid credit card number.               |
 
 | Date Rules        | Description                                                        |
 | ------------      | ------------------------------------------------------------------ |
@@ -59,7 +59,6 @@
 | IsNumberLessThanOrEqual      | Used to test if a number is less than or equal to a specified number.      |
 | IsNumberGreaterThan          | Used to test if a number is greater than a specified number.               |
 | IsNumberGreaterThanOrEqual   | Used to test if a number is greater than or equal to a specified number.   |
-| CreditCard                   | Used to test if a number is a valid credit card number.                    |
 
 
 *   These **rules** are used to lay the validation rules for any model.
@@ -81,7 +80,7 @@
     }
 
     class CreditCard {
-        Number: number;
+        Number: string;
         Name: string;
         ExpiryDate: Date;
     }
@@ -105,9 +104,9 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
             .NotNull(m => m.Name, "Should not be null", "Super.Name.Null")
             .NotNull(m => m.Code, "Should not be null", "Super.Code.Null")
             .If(m => m.Name != null && m.Code != null, validator => validator 
-                                                          .NotEmpty(m => m.Name, "Should not be empty", "Super.Name.Empty")
-                                                          .Matches(m => m.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
-                                                      .ToResult())
+                                                    .NotEmpty(m => m.Name, "Should not be empty", "Super.Name.Empty")
+                                                    .Matches(m => m.Code, "^[a-zA-Z]{2}\\d{4}$", "Should not be invalid", "Super.Code.Invalid")
+                                                .ToResult())
          .ToResult();
  };
 ``` 
@@ -117,11 +116,11 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
             .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
             .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
             .NotNull(m => m.ExpiryDate, "Should not be null", "CreditCard.ExpiryDate.Null")
-            .If(m => m.Name != null && m.Number > 0 && m.ExpiryDate != null, validator => validator 
-                                                          .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
-                                                          .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
-                                                          .IsDateOnOrAfter(m => m.ExpiryDate, new Date(), "Should be on or after today's date", "CreditCard.ExpiryDate.Invalid")
-                                                      .ToResult())
+            .If(m => m.Name != null && m.ExpiryDate != null, validator => validator 
+                                                        .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
+                                                        .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                        .IsDateOnOrAfter(m => m.ExpiryDate, new Date(), "Should be on or after today's date", "CreditCard.ExpiryDate.Invalid")
+                                                    .ToResult())
         .ToResult();
  };
 ```
@@ -139,15 +138,15 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
           .Required(m => m.CreditCards, (m, creditCards) => creditCards.length > 0, "Must have atleast 1 credit card", "Employee.CreditCards.Required")
           .If(m => m.CreditCards != null && m.CreditCards.length > 0, 
                       validator => validator
-                                          .ForEach(m => m.CreditCards, validateCreditCardRules)
-                                  .ToResult())
+                                    .ForEach(m => m.CreditCards, validateCreditCardRules)
+                            .ToResult())
           .If(m => m.Password != '', validator => validator
-                                          .ForStringProperty(m => m.Password, passwordValidator => passwordValidator
-                                                  .Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Employee.Password.Strength")
-                                                  .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Employee.Password.Length")
-                                                  .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used", "Employee.Password.AlreadyUsed")
-                                              .ToResult())
-                                     .ToResult())                                                                                                                    
+                                    .ForStringProperty(m => m.Password, passwordValidator => passwordValidator
+                                            .Matches("(?=.*?[0-9])(?=.*?[a-z])(?=.*?[A-Z])", "Password strength is not valid", "Employee.Password.Strength")
+                                            .Required((m, pwd) => pwd.length > 3, "Password length should be greater than 3", "Employee.Password.Length")
+                                            .Required((m, pwd) => !m.PreviousPasswords.some(prevPwd => prevPwd == pwd), "Password is already used", "Employee.Password.AlreadyUsed")
+                                        .ToResult())
+                                .ToResult())                                                                                                                    
     .ToResult();
  };
 ```
@@ -168,11 +167,11 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
 
     model.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe"
     masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe"
     amexCard.ExpiryDate = expiryDate;
     model.CreditCards.push(masterCard);
@@ -269,11 +268,11 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
 
     accountant.CreditCards = new Array<CreditCard>();
     var masterCard = new CreditCard();
-    masterCard.Number = 5105105105105100;
+    masterCard.Number = "5105105105105100";
     masterCard.Name = "John Doe"
     masterCard.ExpiryDate = expiryDate;
     var amexCard = new CreditCard();
-    amexCard.Number = 371449635398431;
+    amexCard.Number = "371449635398431";
     amexCard.Name = "John Doe";
     amexCard.ExpiryDate = expiryDate;
     accountant.CreditCards.push(masterCard);

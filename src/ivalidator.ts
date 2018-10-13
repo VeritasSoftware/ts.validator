@@ -8,9 +8,7 @@ export interface IValidator<T> {
     ForEach<TArray>(predicate: Func<T, Array<TArray>>, action: Func<IValidator<TArray>, IValidationResult>): IValidator<T>;
     Required<TProperty>(predicate: Func<T, TProperty>, must: Func2<TProperty, T, boolean>, message: string, errorIdentifier?: string): IValidator<T>;
     NotNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
-    IsNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;
-         
-    CreditCard(predicate: Func<T, number>, message: string, errorIdentifier?: string): IValidator<T>;
+    IsNull<TProperty>(predicate: Func<T, TProperty>, message: string, errorIdentifier?: string): IValidator<T>;            
     
     /* String Rules */
     IsLowercase(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
@@ -29,7 +27,8 @@ export interface IValidator<T> {
     Email(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;    
     Length(predicate: Func<T, string>, lowerBound: number, upperBound: number, message: string, errorIdentifier?: string): IValidator<T>;
     NotEmpty(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
-    IsEmpty(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;  
+    IsEmpty(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;
+    CreditCard(predicate: Func<T, string>, message: string, errorIdentifier?: string): IValidator<T>;  
 
     /* Date Rules */
     IsDateOn(predicate: Func<T, Date>, date: Date, message: string, errorIdentifier?: string): IValidator<T>;
@@ -77,6 +76,7 @@ export interface IStringRuleSetValidator<T> extends IRuleSetValidatorBase<T, str
     NotEmpty(message: string, errorIdentifier?: string): IStringRuleSetValidator<T>;
     IsEmpty(message: string, errorIdentifier?: string): IStringRuleSetValidator<T>;  
     Contains(subString: string, message: string, errorIdentifier?: string): IStringRuleSetValidator<T>;
+    CreditCard(message: string, errorIdentifier?: string): IStringRuleSetValidator<T>;
 }
 
 export interface IDateRuleSetValidator<T> extends IRuleSetValidatorBase<T, Date> {
@@ -103,9 +103,7 @@ export interface INumberRuleSetValidator<T> extends IRuleSetValidatorBase<T, Num
     IsNumberLessThan(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
     IsNumberLessThanOrEqual(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
     IsNumberGreaterThan(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
-    IsNumberGreaterThanOrEqual(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
-    
-    CreditCard(message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;
+    IsNumberGreaterThanOrEqual(number: Number, message: string, errorIdentifier?: string): INumberRuleSetValidator<T>;    
 }
 
 /* Deprecated after 1.1.0 */
