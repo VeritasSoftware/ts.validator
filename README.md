@@ -39,7 +39,7 @@
 | IsUrl          | Used to test if a string is an url.                                   |
 | IsCountryCode  | Used to test if a string is a 2 letter country code.                  |
 | Contains       | Used to test if a sub string is contained in the string.              |
-| CreditCard     | Used to test if a number is a valid credit card number.               |
+| CreditCard     | Used to test if a string is a valid credit card number.               |
 
 | Date Rules        | Description                                                        |
 | ------------      | ------------------------------------------------------------------ |
