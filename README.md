@@ -100,7 +100,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
 ```
 
 ```typescript
- var validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
+ let validateSuperRules =  (validator: IValidator<Super>) : ValidationResult => {
    return validator
             .NotNull(m => m.Name, "Should not be null", "Super.Name.Null")
             .NotNull(m => m.Code, "Should not be null", "Super.Code.Null")
@@ -112,7 +112,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
  };
 ``` 
 ```typescript
- var validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {  
+ let validateCreditCardRules =  (validator: IValidator<CreditCard>) : ValidationResult => {  
   return validator
             .NotNull(m => m.Name, "Should not be null", "CreditCard.Name.Null")
             .NotNull(m => m.Number, "Should not be null", "CreditCard.Number.Null")
@@ -126,7 +126,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
  };
 ```
 ```typescript
- var validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
+ let validateEmployeeRules = (validator: IValidator<Employee>) : ValidationResult => {
     return validator                              
           .NotEmpty(m => m.Name, "Should not be empty", "Employee.Name.Empty")
           .NotNull(m => m.CreditCards, "Should not be null", "CreditCard.Null")
@@ -155,7 +155,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
 **Populate models**
 
 ```typescript
-    var model = new Employee();
+    let model = new Employee();
     model.Name = "John Doe";
 
     model.Password = "sD4A3";
@@ -188,30 +188,30 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
 **Synchronous validation**
 
 ```typescript
-    var validationResult = new Validator(model).Validate(validateEmployeeRules);   
+    let validationResult = new Validator(model).Validate(validateEmployeeRules);   
 ```
 
 **Asynchronous validation**
 
 ```typescript
-    var validationResult = await new Validator(model).ValidateAsync(validateEmployeeRules);
+    let validationResult = await new Validator(model).ValidateAsync(validateEmployeeRules);
 ```
 
 **Validation result**
 
 ```typescript
     //Check if the model is valid.
-    var isValid = validationResult.IsValid;
+    let isValid = validationResult.IsValid;
 
     //Get all errors.
-    var allErrors = validationResult.Errors;
+    let allErrors = validationResult.Errors;
 
     //Get error for a particular identifier
-    var employeeNameError = validationResult.Identifier("Employee.Name.Empty");
+    let employeeNameError = validationResult.Identifier("Employee.Name.Empty");
 
     //Get all errors which start with some identifier string. 
     //Below code will return Super.Code.Empty and Super.Code.Invalid errors
-    var superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
+    let superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
 ```
 
 ### Summary of above code snippets
@@ -243,7 +243,7 @@ Let us say there is a class Accountant that inherits from Employee.
 **Validation rules**
 
 ```typescript
-var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
+let validateAccountantRules = (validator: IValidator<Accountant>) : ValidationResult => {
   return validator
             .NotEmpty(m => m.Code, "Should not be empty")
         .ToResult();
@@ -253,7 +253,7 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
 **Populate models**
 
 ```typescript
-    var accountant = new Accountant();
+    let accountant = new Accountant();
     accountant.Code = "ACC001";
 
     //Employee data
@@ -289,14 +289,14 @@ var validateAccountantRules = (validator: IValidator<Accountant>) : ValidationRe
 **Synchronous validation**
 
 ```typescript
-    var validationResult = new Validator(accountant).ValidateBase(validateEmployeeRules)
+    let validationResult = new Validator(accountant).ValidateBase(validateEmployeeRules)
                                                     .Validate(validateAccountantRules); 
 ```
 
 **Asynchronous validation**
 
 ```typescript
-    var validationResult = await new Validator(accountant).ValidateBaseAsync(validateEmployeeRules)
+    let validationResult = await new Validator(accountant).ValidateBaseAsync(validateEmployeeRules)
                                                           .ValidateAsync(validateAccountantRules); 
 ```
 
