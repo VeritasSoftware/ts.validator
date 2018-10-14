@@ -39,7 +39,7 @@
 | IsUrl          | Used to test if a string is an url.                                   |
 | IsCountryCode  | Used to test if a string is a 2 letter country code.                  |
 | Contains       | Used to test if a sub string is contained in the string.              |
-| CreditCard     | Used to test if a string is a valid credit card number.               |
+| IsCreditCard   | Used to test if a string is a valid credit card number.               |
 
 | Date Rules        | Description                                                        |
 | ------------      | ------------------------------------------------------------------ |
@@ -59,6 +59,7 @@
 | IsNumberLessThanOrEqual      | Used to test if a number is less than or equal to a specified number.      |
 | IsNumberGreaterThan          | Used to test if a number is greater than a specified number.               |
 | IsNumberGreaterThanOrEqual   | Used to test if a number is greater than or equal to a specified number.   |
+| CreditCard                   | Used to test if a number is a valid credit card number.                    |
 
 
 *   These **rules** are used to lay the validation rules for any model.
@@ -118,7 +119,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
             .NotNull(m => m.ExpiryDate, "Should not be null", "CreditCard.ExpiryDate.Null")
             .If(m => m.Name != null && m.ExpiryDate != null, validator => validator 
                                                         .NotEmpty(m => m.Name, "Should not be empty", "CreditCard.Name.Empty")
-                                                        .CreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
+                                                        .IsCreditCard(m => m.Number, "Should not be invalid", "CreditCard.Number.Invalid")
                                                         .IsDateOnOrAfter(m => m.ExpiryDate, new Date(), "Should be on or after today's date", "CreditCard.ExpiryDate.Invalid")
                                                     .ToResult())
         .ToResult();

@@ -206,7 +206,7 @@ var StringRuleSetValidator = /** @class */ (function (_super) {
         }
         return this;
     };
-    StringRuleSetValidator.prototype.CreditCard = function (message, errorIdentifier) {
+    StringRuleSetValidator.prototype.IsCreditCard = function (message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         if ((this._property != null) && this._property.match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
             this.processErrors(this._property.toString(), message, errorIdentifier);
@@ -280,6 +280,13 @@ var NumberRuleSetValidator = /** @class */ (function (_super) {
     NumberRuleSetValidator.prototype.IsNumberGreaterThanOrEqual = function (number, message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         if (this._property < number) {
+            this.processErrors(this._property.toString(), message, errorIdentifier);
+        }
+        return this;
+    };
+    NumberRuleSetValidator.prototype.CreditCard = function (message, errorIdentifier) {
+        if (errorIdentifier === void 0) { errorIdentifier = null; }
+        if ((this._property != null) && this._property.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
             this.processErrors(this._property.toString(), message, errorIdentifier);
         }
         return this;
