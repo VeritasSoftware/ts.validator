@@ -50,5 +50,6 @@ export declare class ObjectValidator<T> implements IValidator<T> {
     private getPropertyName(expression);
     private addErrors(errors);
     private processErrors(predicate, val, message, errorIdentifier?);
+    private luhnAlgorithm(cc);
     ToResult(): ValidationResult;
 }

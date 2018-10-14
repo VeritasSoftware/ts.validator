@@ -108,7 +108,7 @@ var ObjectValidator = /** @class */ (function () {
     ObjectValidator.prototype.CreditCard = function (predicate, message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         var val = predicate(this._model);
-        if (val.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
+        if ((!this.luhnAlgorithm(val.toString())) || (val.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null)) {
             this.processErrors(predicate, val, message, errorIdentifier);
         }
         return this;
@@ -116,7 +116,7 @@ var ObjectValidator = /** @class */ (function () {
     ObjectValidator.prototype.IsCreditCard = function (predicate, message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
         var val = predicate(this._model);
-        if (val.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
+        if ((!this.luhnAlgorithm(val)) || (val.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null)) {
             this.processErrors(predicate, val, message, errorIdentifier);
         }
         return this;
@@ -403,6 +403,31 @@ var ObjectValidator = /** @class */ (function () {
         else {
             this._validationErrors.push(new validation_result_1.ValidationError(errorIdentifier, val, message));
         }
+    };
+    ObjectValidator.prototype.luhnAlgorithm = function (cc) {
+        cc = cc.replace(' ', '');
+        var sum = 0;
+        var doubleUp = false;
+        /* from the right to left, double every other digit starting with the second to last digit.*/
+        for (var i = cc.length - 1; i >= 0; i--) {
+            var curDigit = parseInt(cc.charAt(i));
+            /* double every other digit starting with the second to last digit */
+            if (doubleUp) {
+                /* doubled number is greater than 9 than subtracted 9 */
+                if ((curDigit * 2) > 9) {
+                    sum += (curDigit * 2) - 9;
+                }
+                else {
+                    sum += curDigit * 2;
+                }
+            }
+            else {
+                sum += curDigit;
+            }
+            var doubleUp = !doubleUp;
+        }
+        /* sum and divide it by 10. If the remainder equals zero, the original credit card number is valid.  */
+        return (sum % 10) == 0;
     };
     ObjectValidator.prototype.ToResult = function () {
         return new validation_result_1.ValidationResult(this._validationErrors);

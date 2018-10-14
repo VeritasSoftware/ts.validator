@@ -37,6 +37,30 @@ var RuleSetValidatorBase = /** @class */ (function () {
             return "";
         }
     };
+    RuleSetValidatorBase.prototype.luhnAlgorithm = function (cc) {
+        var sum = 0;
+        var doubleUp = false;
+        /* from the right to left, double every other digit starting with the second to last digit.*/
+        for (var i = cc.length - 1; i >= 0; i--) {
+            var curDigit = parseInt(cc.charAt(i));
+            /* double every other digit starting with the second to last digit */
+            if (doubleUp) {
+                /* doubled number is greater than 9 than subtracted 9 */
+                if ((curDigit * 2) > 9) {
+                    sum += (curDigit * 2) - 9;
+                }
+                else {
+                    sum += curDigit * 2;
+                }
+            }
+            else {
+                sum += curDigit;
+            }
+            var doubleUp = !doubleUp;
+        }
+        /* sum and divide it by 10. If the remainder equals zero, the original credit card number is valid.  */
+        return (sum % 10) == 0 ? true : false;
+    };
     RuleSetValidatorBase.prototype.ToResult = function () {
         return new validation_result_1.ValidationResult(this._validationErrors);
     };
@@ -208,7 +232,7 @@ var StringRuleSetValidator = /** @class */ (function (_super) {
     };
     StringRuleSetValidator.prototype.IsCreditCard = function (message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
-        if ((this._property != null) && this._property.match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
+        if ((this._property != null) && ((!this.luhnAlgorithm(this._property)) || (this._property.match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null))) {
             this.processErrors(this._property.toString(), message, errorIdentifier);
         }
         return this;
@@ -286,7 +310,7 @@ var NumberRuleSetValidator = /** @class */ (function (_super) {
     };
     NumberRuleSetValidator.prototype.CreditCard = function (message, errorIdentifier) {
         if (errorIdentifier === void 0) { errorIdentifier = null; }
-        if ((this._property != null) && this._property.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null) {
+        if ((this._property != null) && ((!this.luhnAlgorithm(this._property.toString())) || (this._property.toString().match(/^(?:4[0-9]{12}(?:[0-9]{3})?|[25][1-7][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/) == null))) {
             this.processErrors(this._property.toString(), message, errorIdentifier);
         }
         return this;
