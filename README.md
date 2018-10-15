@@ -28,6 +28,7 @@
 | Matches        | Used to test if a string matches a regular expression.                |
 | NotMatches     | Used to test if a string does not match a regular expression.         |
 | Email          | Used to test if a string is a valid email address.                    |
+| IsCreditCard   | Used to test if a string is a valid credit card number.               |
 | IsLowercase    | Used to test if a string is lower case.                               |
 | IsUppercase    | Used to test if a string is upper case.                               |
 | IsMixedcase    | Used to test if a string is mixed case.                               |
@@ -39,7 +40,6 @@
 | IsUrl          | Used to test if a string is an url.                                   |
 | IsCountryCode  | Used to test if a string is a 2 letter country code.                  |
 | Contains       | Used to test if a sub string is contained in the string.              |
-| IsCreditCard   | Used to test if a string is a valid credit card number.               |
 
 | Date Rules        | Description                                                        |
 | ------------      | ------------------------------------------------------------------ |
