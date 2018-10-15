@@ -227,7 +227,7 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
 *   Each validation rule comprises of a property on which the validation will apply, a message for any error and an identifier string for the error.
 *   The **identifier string** is used to **group messages** together for a field.
 *   The framework provides an API called **IdentifierStartsWith** which fetches all the validation errors for a particular identifier starts with the text.
-*   Eg. “Super” will fetch all errors whose identifier starts with Super.
+*   Eg. "Employee.Password" will fetch all errors whose identifier starts with Employee.Password.
 
 ## Inheritance support
 
