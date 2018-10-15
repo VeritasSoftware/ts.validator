@@ -10,7 +10,7 @@
 | ------------ | ------------------------------------------------------------------------------ |
 | If           | Used for program flow. The then part is only evaluated if the if part is true. |
 | ForEach      | Used to iterate and apply validations to an array.                             |
-| ForStringProperty | Used to stack multiple validations against a single string property.      |
+| ForStringProperty | Used to stack multiple validations against a single String property.      |
 | ForDateProperty   | Used to stack multiple validations against a single Date property.        |
 | ForNumberProperty | Used to stack multiple validations against a single Number property.      |
 | For (deprecated)  | Used to stack multiple validations against a single property.             |
