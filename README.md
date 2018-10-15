@@ -210,8 +210,9 @@ import { IValidator, Validator, ValidationResult } from 'ts.validator.fluent/dis
     let employeeNameError = validationResult.Identifier("Employee.Name.Empty");
 
     //Get all errors which start with some identifier string. 
-    //Below code will return Super.Code.Empty and Super.Code.Invalid errors
-    let superCodeErrors = validationResult.IdentifierStartsWith("Super.Code");
+    //Below code will return Employee.Password.Strength and Employee.Password.Length and 
+    //Employee.Password.AlreadyUsed errors
+    let superCodeErrors = validationResult.IdentifierStartsWith("Employee.Password");
 ```
 
 ### Summary of above code snippets
