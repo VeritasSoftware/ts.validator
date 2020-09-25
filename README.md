@@ -4,6 +4,8 @@
 
 [**NPM package**](https://www.npmjs.com/package/ts.validator.fluent)
 
+![npm](https://img.shields.io/npm/dw/ts.validator.fluent)
+
 [**Demo Angular 6 CLI app using the framework library**](https://github.com/VeritasSoftware/ts-validator-app-angular6)
 
 | Rules        | Description                                                                    |
